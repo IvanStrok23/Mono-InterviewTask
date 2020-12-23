@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MonoTask.UI.Web.Ninject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,7 +13,11 @@ namespace MonoTask.UI.Web
     {
         protected void Application_Start()
         {
+            
             AreaRegistration.RegisterAllAreas();
+
+            DependencyResolver.SetResolver(new NinjectResolver());
+
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);

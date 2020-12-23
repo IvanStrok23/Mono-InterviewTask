@@ -67,8 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\IVehiclesDbContext.cs" />
-    <Compile Include="Entities\VehicleMake.cs" />
-    <Compile Include="Entities\VehicleModel.cs" />
+    <Compile Include="DBEntities\VehicleMake.cs" />
+    <Compile Include="DBEntities\VehicleModel.cs" />
     <Compile Include="Migrations\202012231510461_Init.cs" />
     <Compile Include="Migrations\202012231510461_Init.designer.cs">
       <DependentUpon>202012231510461_Init.cs</DependentUpon>
@@ -85,7 +85,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>VehicleDBDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="VehiclesDbContext.cs" />
+    <Compile Include="DBContexts\VehiclesDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

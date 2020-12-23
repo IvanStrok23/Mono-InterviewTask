@@ -10,6 +10,7 @@ namespace MonoTask.UI.Web.Controllers
     {
         public ActionResult Index()
         {
+            
             return View();
         }
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoTask.Core.Services.Interfaces
+namespace MonoTask.Core.Services
 {
-    interface IVehicleMakeService
+    public interface IVehicleMakeService
     {
 
     }
