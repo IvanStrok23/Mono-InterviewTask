@@ -63,11 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IVehicleMakeService.cs" />
-    <Compile Include="Interfaces\IVehicleModelService.cs" />
+    <Compile Include="Interfaces\IVehicleService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\VehicleMakeService.cs" />
-    <Compile Include="Services\VehicleModelService.cs" />
+    <Compile Include="Services\VehicleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MonoTask.Infrastructure.DAL\MonoTask.Infrastructure.DAL.csproj">

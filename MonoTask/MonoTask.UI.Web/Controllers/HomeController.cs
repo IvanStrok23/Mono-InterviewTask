@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MonoTask.Core.Services;
+using MonoTask.Infrastructure.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,9 +10,15 @@ namespace MonoTask.UI.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IVehicleService _vehicleModelService;
+        public HomeController(IVehicleService vehicleModelService)
+        {
+            _vehicleModelService = vehicleModelService;
+        }
+
         public ActionResult Index()
         {
-            
+            VehicleModel item = _vehicleModelService.GetTest();
             return View();
         }
 

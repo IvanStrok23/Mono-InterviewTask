@@ -7,12 +7,21 @@ using System.Threading.Tasks;
 
 namespace MonoTask.Core.Services
 {
-    public class VehicleModelService : IVehicleModelService
+    public class VehicleService : IVehicleService
     {
         private readonly IVehiclesDbContext _vehiclesDbContext;
-        public VehicleModelService(IVehiclesDbContext vehiclesDbContext)
+        public VehicleService(IVehiclesDbContext vehiclesDbContext)
         {
             _vehiclesDbContext = vehiclesDbContext;
+        }
+
+        public VehicleModel GetTest()
+        {
+            return new VehicleModel()
+            {
+                Id = 4,
+                MakeId = 3
+            };
         }
     }
 }
