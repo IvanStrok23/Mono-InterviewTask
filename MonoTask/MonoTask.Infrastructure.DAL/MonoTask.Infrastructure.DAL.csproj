@@ -66,8 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Entities\IVehiclesDbContext.cs" />
+    <Compile Include="Interfaces\IVehiclesDbContext.cs" />
     <Compile Include="Entities\VehicleMake.cs" />
     <Compile Include="Entities\VehicleModel.cs" />
     <Compile Include="Migrations\202012231510461_Init.cs" />

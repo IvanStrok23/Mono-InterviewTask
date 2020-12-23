@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MonoTask.Infrastructure.DAL
+namespace MonoTask.Core.Services.Interfaces
 {
-    public class Class1
+    interface IVehicleMakeService
     {
+
     }
 }
