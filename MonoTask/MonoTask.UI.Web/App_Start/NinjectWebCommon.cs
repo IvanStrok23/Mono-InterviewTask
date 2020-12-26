@@ -5,11 +5,13 @@ namespace MonoTask.UI.Web.App_Start
 {
     using System;
     using System.Web;
+    using AutoMapper;
     using global::Ninject;
     using global::Ninject.Web.Common;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using MonoTask.Core.Services;
     using MonoTask.Infrastructure.DAL;
+    using MonoTask.Infrastructure.DAL.AutoMapper;
     using MonoTask.Infrastructure.DAL.Entities;
     using Ninject;
 
@@ -63,9 +65,14 @@ namespace MonoTask.UI.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
+            kernel.Bind<IMapper>().ToConstructor(c => new Mapper(config)).InSingletonScope();
+
+
             //TODO: Check and change if so - this is only reason to have EF in UI 
             kernel.Bind<IVehiclesDbContext>().To<VehiclesDbContext>();
             kernel.Bind<IVehicleService>().To<VehicleService>();
+            
         }        
     }
 }

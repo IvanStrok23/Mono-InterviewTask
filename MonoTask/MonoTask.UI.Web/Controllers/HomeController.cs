@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using POCO = MonoTask.Core.Entities;
+
 
 namespace MonoTask.UI.Web.Controllers
 {
@@ -18,7 +20,7 @@ namespace MonoTask.UI.Web.Controllers
 
         public ActionResult Index()
         {
-            VehicleModel item = _vehicleModelService.GetTest();
+            POCO.VehicleModel item = _vehicleModelService.GetTest();
             return View();
         }
 
