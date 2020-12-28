@@ -3,6 +3,8 @@ using MonoTask.Infrastructure.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using POCO = MonoTask.Core.Entities;
@@ -18,10 +20,41 @@ namespace MonoTask.UI.Web.Controllers
             _vehicleModelService = vehicleModelService;
         }
 
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            POCO.VehicleModel item = _vehicleModelService.GetTest();
+            //for (int i = 0; i < 20; i++)
+            //{
+            //    VehicleModel item = new VehicleModel()
+            //    {
+            //        MakeId = i + 23,
+            //        Name = "Auto" + i,
+            //        Year = i + 1900,
+            //        CreatedAt = DateTime.UtcNow,
+            //        UpdatedAt = DateTime.UtcNow
+            //    };
+            //    await _vehicleModelService.Insert(item);
+            //}
+
+
+           // var item1 = await _vehicleModelService.GetModelById(193);
+            //if (item1 == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            //}
+
+           // ViewBag.Item = item1;
             return View();
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            bool response = await _vehicleModelService.DeleteModel(id);
+            if (response)
+            {
+                return View();
+            }
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
         }
 
         public ActionResult About()

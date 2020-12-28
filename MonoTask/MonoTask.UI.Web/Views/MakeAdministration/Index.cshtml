@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Make administrtion</h2>
+
+<br />
+<br />
+<br />
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Id</th>
+        <th>Year</th>
+
+    </tr>
+    @if (ViewBag.Item != null)
+    {
+        <tr>
+            <td>@ViewBag.Item.Id</td>
+            <td>@ViewBag.Item.Year</td>
+        </tr>
+    }
+</table>

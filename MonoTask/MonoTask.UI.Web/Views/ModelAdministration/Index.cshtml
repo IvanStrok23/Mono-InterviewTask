@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Scripts{
+    <script>
+        function DeleteCall(id) {
+            $.ajax({
+                type: "POST",
+                url: '/ModelAdministration/Delete',
+                data: JSON.stringify({ id: id }),
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    alert(response.message);
+                    location.reload();
+                },
+                error: function (jqXHR, response) {
+                    alert("Error! HTTP Status: " + jqXHR.status + " Message: " + respons.message);
+                }
+            });
+
+        }
+
+        function RefreshPage() {
+            window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+        }
+
+        function SearchValueChange() {
+            window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();       
+        }
+
+        function EditModel(id,name,year) {
+            $("#ModalTitle").html("Update Model Record");
+            $("#MyModal").modal();
+
+            $("#ModalIdShow").show();
+            $("#ModalId").text(id);
+            $("#ModalName").val(name);
+            $("#ModalYear").val(year);
+        }
+
+        function AddModel() {
+            $("#ModalTitle").html("Add Model Record");
+            $("#MyModal").modal();
+            $("#ModalIdShow").hide();
+            $("#ModalId").text(null);
+            $("#ModalName").val("");
+            $("#ModalYear").val("");
+        }
+
+        $("#SaveModel").click(function () {
+            var model = { Id: $("#ModalId").text(), Name: $("#ModalName").val(), Year: $("#ModalYear").val() };
+            $.ajax({
+                type: "Post",
+                url: model.Id == null || model.Id == "" ? "/ModelAdministration/Insert": "/ModelAdministration/Edit",
+                data: JSON.stringify(model),
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#MyModal").modal("hide");
+                    window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + @ViewBag.CurrentPage  + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+                    alert(response.message);
+                },
+                error: function (jqXHR, response) {
+                    alert("Error! HTTP Status: " + jqXHR.status + " Message: " + response.message);
+                }
+            })
+        })
+
+    </script>
+}
+
+<h2>Model Administration</h2>
+<br />
+<br />
+<br />
+<input type="text" id="searchValue" value="@ViewBag.SearchValue" />
+<button type="button" id="btnSearch" class="btn btn-primary" onclick="RefreshPage()">
+    Search
+</button>
+@if (ViewBag.Items.Count > 0)
+{
+    <div style="display: flex; float: right; min-width:100px">
+        <div>
+            @if (ViewBag.CurrentPage > 1)
+            {
+                @Html.ActionLink("previous page", "Index", new { page = ViewBag.CurrentPage - 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+            }
+        </div>
+        <div style="margin: 0px 10px;">@ViewBag.CurrentPage</div>
+        <div style="min-width:100px">
+            @if (ViewBag.CurrentPage < ViewBag.PageMax)
+            {
+                @Html.ActionLink("next page", "Index", new { page = ViewBag.CurrentPage + 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+            }
+        </div>
+    </div>
+    <table class="table table-bordered table-responsive table-hover">
+
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "Index", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+            </th>
+            <th>Year</th>
+            <th style="width: 140px;">Actions</th>
+        </tr>
+        @foreach (var item in ViewBag.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Year</td>
+                <td>
+                    <button type="button" id="btnDelete" class="btn btn-primary" onclick="DeleteCall(@item.Id)">
+                        Delete
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="EditModel(@item.Id,'@item.Name',@item.Year)">
+                        Edit
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+
+
+
+}
+else
+{
+    <h2> No Data </h2>
+}
+
+<div class="modal fade" id="MyModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 id="ModalTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <fieldset id="SubmitForm">
+                        <div id="ModalIdShow">
+                            <label>Id:</label>
+                            <text id="ModalId" name="Id"></text>
+                        </div>
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input id="ModalName" name="Name" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label>Year:</label>
+                            <input id="ModalYear" name="Year" type="number" />
+                        </div>
+                        <div class="form-group">
+                            <a href="#" class="btn btn-block btn-danger" id="SaveModel">Save</a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button type="button" class="btn btn-primary" onclick="AddModel()">
+    Add
+</button>
