@@ -66,6 +66,7 @@ namespace MonoTask.UI.Web.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
+            
             kernel.Bind<IMapper>().ToConstructor(c => new Mapper(config)).InSingletonScope();
 
 

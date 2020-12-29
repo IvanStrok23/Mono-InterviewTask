@@ -3,22 +3,163 @@
     ViewBag.Title = "Index";
 }
 
+@section Scripts{
+    <script>
+        function DeleteCall(id) {
+            $.ajax({
+                type: "POST",
+                url: '/MakeAdministration/Delete',
+                data: JSON.stringify({ id: id }),
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    alert(response.message);
+                    location.reload();
+                },
+                error: function (jqXHR, response) {
+                    alert("Error! HTTP Status: " + jqXHR.status + " Message: " + respons.message);
+                }
+            });
+
+        }
+
+        function RefreshPage() {
+            window.location.href = "@Url.Action("Index", "MakeAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+        }
+
+        function SearchValueChange() {
+            window.location.href = "@Url.Action("Index", "MakeAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+        }
+
+        function EditMake(id,name,country) {
+            $("#ModalTitle").html("Edit Make Record");
+            $("#MyModal").modal();
+
+            $("#ModalIdShow").show();
+            $("#ModalId").text(id);
+            $("#ModalName").val(name);
+            $("#ModalCountry").val(country);
+        }
+
+        function AddMake() {
+            $("#ModalTitle").html("Add Make Record");
+            $("#MyModal").modal();
+            $("#ModalIdShow").hide();
+            $("#ModalId").text(null);
+            $("#ModalName").val("");
+            $("#ModalCountry").val("");
+        }
+
+        $("#SaveMake").click(function () {
+            var make = { Id: $("#ModalId").text(), Name: $("#ModalName").val(), Country: $("#ModalCountry").val()};
+            $.ajax({
+                type: "Post",
+                url: make.Id == null || make.Id == "" ? "/MakeAdministration/Insert": "/MakeAdministration/Edit",
+                data: JSON.stringify(make),
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $("#MyModal").modal("hide");
+                    window.location.href = "@Url.Action("Index", "MakeAdministration")" + "?page=" + @ViewBag.CurrentPage  + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+                    alert(response.message);
+                },
+                error: function (jqXHR, response) {
+                    alert("Error! HTTP Status: " + jqXHR.status + " Message: " + response.message);
+                }
+            })
+        })
+
+    </script>
+}
+
 <h2>Make administrtion</h2>
 
 <br />
 <br />
 <br />
-<table class="table table-bordered table-responsive table-hover">
-    <tr>
-        <th>Id</th>
-        <th>Year</th>
+<input type="text" id="searchValue" value="@ViewBag.SearchValue" />
+<button type="button" id="btnSearch" class="btn btn-primary" onclick="RefreshPage()">
+    Search
+</button>
+@if (ViewBag.Items.Count > 0)
+{
+    <div style="display: flex; float: right; min-width:100px">
+        <div>
+            @if (ViewBag.CurrentPage > 1)
+            {
+                @Html.ActionLink("previous page", "Index", new { page = ViewBag.CurrentPage - 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+            }
+        </div>
+        <div style="margin: 0px 10px;">@ViewBag.CurrentPage</div>
+        <div style="min-width:100px">
+            @if (ViewBag.CurrentPage < ViewBag.PageMax)
+            {
+                @Html.ActionLink("next page", "Index", new { page = ViewBag.CurrentPage + 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+            }
+        </div>
+    </div>
+    <table class="table table-bordered table-responsive table-hover">
 
-    </tr>
-    @if (ViewBag.Item != null)
-    {
         <tr>
-            <td>@ViewBag.Item.Id</td>
-            <td>@ViewBag.Item.Year</td>
+            <th>
+                @Html.ActionLink("Name", "Index", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+            </th>
+            <th>Country</th>
+            <th style="width: 140px;">Actions</th>
         </tr>
-    }
-</table>
+        @foreach (var item in ViewBag.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Country</td>
+                <td>
+                    <button type="button" id="btnDelete" class="btn btn-primary" onclick="DeleteCall(@item.Id)">
+                        Delete
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="EditMake(@item.Id,'@item.Name','@item.Country')">
+                        Edit
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <h2> No Data </h2>
+}
+
+<div class="modal fade" id="MyModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 id="ModalTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="form">
+                    <fieldset id="SubmitForm">
+                        <div id="ModalIdShow">
+                            <label>Id:</label>
+                            <text id="ModalId" name="Id"></text>
+                        </div>
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <input id="ModalName" name="Name" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <label>Country:</label>
+                            <input id="ModalCountry" name="Country" type="text" />
+                        </div>
+                        <div class="form-group">
+                            <a href="#" class="btn btn-block btn-danger" id="SaveMake">Save</a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<button type="button" class="btn btn-primary" onclick="AddMake()">
+    Add
+</button>

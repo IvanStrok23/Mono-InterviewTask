@@ -16,6 +16,7 @@ namespace MonoTask.Infrastructure.DAL.AutoMapper
         {
             CreateMap<VehicleMake, POCO.VehicleMake>();
             CreateMap<VehicleModel, POCO.VehicleModel>();
+            
         }
     }
 }

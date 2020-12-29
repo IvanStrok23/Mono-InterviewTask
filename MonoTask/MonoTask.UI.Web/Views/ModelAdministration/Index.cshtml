@@ -30,12 +30,13 @@
             window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();       
         }
 
-        function EditModel(id,name,year) {
+        function EditModel(id,name,year,makeId) {
             $("#ModalTitle").html("Update Model Record");
             $("#MyModal").modal();
 
             $("#ModalIdShow").show();
             $("#ModalId").text(id);
+            $("#ModalMakeDropdown").val(makeId);
             $("#ModalName").val(name);
             $("#ModalYear").val(year);
         }
@@ -44,13 +45,14 @@
             $("#ModalTitle").html("Add Model Record");
             $("#MyModal").modal();
             $("#ModalIdShow").hide();
+            $("#ModalMakeDropdown").val(1);
             $("#ModalId").text(null);
             $("#ModalName").val("");
             $("#ModalYear").val("");
         }
 
         $("#SaveModel").click(function () {
-            var model = { Id: $("#ModalId").text(), Name: $("#ModalName").val(), Year: $("#ModalYear").val() };
+            var model = { Id: $("#ModalId").text(), Name: $("#ModalName").val(), Year: $("#ModalYear").val(), MakeId: $("#ModalMakeDropdown").val()};
             $.ajax({
                 type: "Post",
                 url: model.Id == null || model.Id == "" ? "/ModelAdministration/Insert": "/ModelAdministration/Edit",
@@ -102,6 +104,7 @@
                 @Html.ActionLink("Name", "Index", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th>Year</th>
+            <th>Make</th>
             <th style="width: 140px;">Actions</th>
         </tr>
         @foreach (var item in ViewBag.Items)
@@ -109,20 +112,18 @@
             <tr>
                 <td>@item.Name</td>
                 <td>@item.Year</td>
+                <td>@item.MakeName</td>
                 <td>
                     <button type="button" id="btnDelete" class="btn btn-primary" onclick="DeleteCall(@item.Id)">
                         Delete
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="EditModel(@item.Id,'@item.Name',@item.Year)">
+                    <button type="button" class="btn btn-primary" onclick="EditModel(@item.Id,'@item.Name',@item.Year,@item.MakeId)">
                         Edit
                     </button>
                 </td>
             </tr>
         }
     </table>
-
-
-
 }
 else
 {
@@ -142,13 +143,17 @@ else
                         <div id="ModalIdShow">
                             <label>Id:</label>
                             <text id="ModalId" name="Id"></text>
-                        </div>
+                        </div> 
                         <div class="form-group">
-                            <label>Name:</label>
+                            <label class="modal-label">Name:</label>
                             <input id="ModalName" name="Name" type="text" />
                         </div>
                         <div class="form-group">
-                            <label>Year:</label>
+                            <label class="modal-label">Make:</label>
+                            @Html.DropDownList("selectedPage", (SelectList)ViewBag.MakeDropdownList, new { id = "ModalMakeDropdown" })
+                        </div>
+                        <div class="form-group">
+                            <label class="modal-label">Year:</label>
                             <input id="ModalYear" name="Year" type="number" />
                         </div>
                         <div class="form-group">

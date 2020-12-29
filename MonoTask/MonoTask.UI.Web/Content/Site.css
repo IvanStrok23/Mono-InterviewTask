@@ -22,3 +22,7 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.modal-label {
+    min-width:75px;
+}
