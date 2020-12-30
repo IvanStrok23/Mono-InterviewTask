@@ -68,9 +68,6 @@ namespace MonoTask.UI.Web.App_Start
             var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
             
             kernel.Bind<IMapper>().ToConstructor(c => new Mapper(config)).InSingletonScope();
-
-
-            //TODO: Check and change if so - this is only reason to have EF in UI 
             kernel.Bind<IVehiclesDbContext>().To<VehiclesDbContext>();
             kernel.Bind<IVehicleService>().To<VehicleService>();
             

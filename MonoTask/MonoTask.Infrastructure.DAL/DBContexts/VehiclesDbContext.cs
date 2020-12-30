@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MonoTask.Infrastructure.DAL.Entities;
-using MonoTask.Infrastructure.DAL.Interfaces;
-using System;
+﻿using MonoTask.Infrastructure.DAL.Entities;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MonoTask.Infrastructure.DAL
@@ -14,9 +9,12 @@ namespace MonoTask.Infrastructure.DAL
     {
         public DbSet<VehicleMake> VehiclesMake { get; set; }
         public DbSet<VehicleModel> VehiclesModel { get; set; }
-        public async Task SaveAsync()
+
+
+        public async Task<T> Get<T>(int id) where T : class
         {
-           await base.SaveChangesAsync();
+            var t = await base.Set<T>().FindAsync(id);
+            return t;
         }
 
         public async Task Insert<T>(T entity) where T : class
@@ -44,10 +42,10 @@ namespace MonoTask.Infrastructure.DAL
             base.Set<T>().RemoveRange(entities);
             await base.SaveChangesAsync();
         }
-        public async Task<T> Get<T>(int id) where T : class
+
+        public async Task SaveAsync()
         {
-            var t = await base.Set<T>().FindAsync(id);
-            return t;
+            await base.SaveChangesAsync();
         }
     }
 }

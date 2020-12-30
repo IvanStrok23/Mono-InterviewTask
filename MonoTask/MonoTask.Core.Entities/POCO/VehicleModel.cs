@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoTask.Core.Entities
 {
@@ -13,7 +9,7 @@ namespace MonoTask.Core.Entities
         public int MakeId { get; set; }
         public string MakeName { get; set; }
         public int Year { get; set; }
-        public DateTime CreatedAt { get; set; } // Do we need this in viewmodel ?
-        public DateTime UpdatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } 
+        public DateTime UpdatedAt { get; set; } //TOCHECK: Do we need this in viewmodel ?
     }
 }

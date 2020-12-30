@@ -1,11 +1,9 @@
 ﻿using MonoTask.Core.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using POCO = MonoTask.Core.Entities;
 
 namespace MonoTask.UI.Web.Controllers
@@ -19,7 +17,6 @@ namespace MonoTask.UI.Web.Controllers
         }
         public async Task<ActionResult> Index(int page = 1,string sortBy = "Name",string sortOrder = "asc",string searchValue = "")
         {
-
             page = page <= 0 ? 1 : page;
 
             var items = await _vehicleService.GetModels(page, sortBy, sortOrder, searchValue);
@@ -29,23 +26,14 @@ namespace MonoTask.UI.Web.Controllers
             ViewBag.SearchValue = searchValue;
             ViewBag.CurrentPage = page;
             ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1) ;
-            var makeDropdown = await _vehicleService.GetMakeDropdown(); //TODO: Will pull data after every refresh - make it just on open edit or add
-            ViewBag.MakeDropdownList = new SelectList(makeDropdown, "Key", "Value", 1);
+            if (ViewBag.MakeDropdownList == null)
+            {
+                ViewBag.MakeDropdownList = new SelectList(new Dictionary<int, string>() { { 0, "" } }, "Key", "Value", 1);
+            }
             return View();
         }
 
-
         [HttpPost]
-        public async Task<ActionResult> Delete(int id)
-        {
-            bool response = await _vehicleService.DeleteModel(id);
-            if (response)
-            {
-                return getResult(HttpStatusCode.OK, "Deletion success!");
-            }
-            return getResult(HttpStatusCode.BadRequest, "BadRequest");
-        }
-
         public async Task<ActionResult> Insert(POCO.VehicleModel model)
         {
             bool response = await _vehicleService.InsertModel(model);
@@ -55,20 +43,35 @@ namespace MonoTask.UI.Web.Controllers
             }
             return getResult(HttpStatusCode.BadRequest, "BadRequest");
         }
+
+        [HttpPost]
         public async Task<ActionResult> GetMakeDropdown()
         {
-            //Info: call to make page dropdown in order to make it with limit
+            //TODO: Limit data
             var makeDropdown = await _vehicleService.GetMakeDropdown();
-            ViewBag.MakeDropdownList = new SelectList(makeDropdown, "Key", "Value", 1);
-            return getResult(HttpStatusCode.OK, "Success!");
-        }
+            Response.StatusCode = (int)HttpStatusCode.OK;
+            return Json(new { success = false, message = "Success!",data = Newtonsoft.Json.JsonConvert.SerializeObject(makeDropdown) }, JsonRequestBehavior.AllowGet);
 
+        }
+        
+        [HttpPost]
         public async Task<ActionResult> Edit(POCO.VehicleModel model)
         {
             bool response = await _vehicleService.EditModel(model);
             if (response)
             {
                 return getResult(HttpStatusCode.OK, "Edit success!");
+            }
+            return getResult(HttpStatusCode.BadRequest, "BadRequest");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
+        {
+            bool response = await _vehicleService.DeleteModel(id);
+            if (response)
+            {
+                return getResult(HttpStatusCode.OK, "Deletion success!");
             }
             return getResult(HttpStatusCode.BadRequest, "BadRequest");
         }

@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
-using MonoTask.Infrastructure.DAL.AutoMapper;
 using MonoTask.Infrastructure.DAL.Entities;
-using MonoTask.Infrastructure.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 using POCO = MonoTask.Core.Entities;
 
 
@@ -25,23 +20,18 @@ namespace MonoTask.Core.Services
             _mapper = mapper;
         }
 
+        #region VehicleModel
+
         public async Task<bool> InsertModel(POCO.VehicleModel entity)
         {
             if (entity == null || entity.Id != 0)
             {
                 return false;
             }
-            //TOODOO:: Try with mapper 
-            VehicleModel temp = new VehicleModel()
-            {
-                MakeId = entity.MakeId,
-                Name = entity.Name,
-                Year = entity.Year,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            await _vehiclesDbContext.Insert(temp);
+            VehicleModel mapped = _mapper.Map<VehicleModel>(entity);
+            mapped.CreatedAt = DateTime.UtcNow;
+            mapped.UpdatedAt = DateTime.UtcNow;
+            await _vehiclesDbContext.Insert(mapped);
             return true;
         }
 
@@ -62,17 +52,6 @@ namespace MonoTask.Core.Services
                         };
             return await Task.Run(() => query.FirstOrDefaultAsync()); ;
         }
-
-        public async Task<bool> DeleteModel(int id)
-        {
-            var m = await Task.Run(() =>  _vehiclesDbContext.VehiclesModel.FindAsync(id));
-            if(m == null)
-            {
-                return false;
-            }
-            return await _vehiclesDbContext.Remove(m);
-        }
-
         public async Task<List<POCO.VehicleModel>> GetModels(int page, string sortBy, string sortOrder, string searchValue)
         {
             var query = from model in _vehiclesDbContext.VehiclesModel
@@ -114,12 +93,10 @@ namespace MonoTask.Core.Services
             var result = await Task.Run(() => query.ToListAsync()); //TODO:  Clean this
             return _mapper.Map<List<POCO.VehicleModel>>(result);
         }
-
         public async Task<int> GetModelCount(string searchValue)
         {
             return await Task.Run(() => _vehiclesDbContext.VehiclesModel.Where(i => i.Name.StartsWith(searchValue)).Count());
         }
-
         public async Task<bool> EditModel(POCO.VehicleModel model)
         {
             VehicleModel temp = _vehiclesDbContext.VehiclesModel.Where(i => i.Id == model.Id).FirstOrDefault();
@@ -138,30 +115,30 @@ namespace MonoTask.Core.Services
             }
         }
 
-        public async Task<Dictionary<int, string>> GetMakeDropdown()
+        public async Task<bool> DeleteModel(int id)
         {
-            //TODO: This should be limited
-            var query = _vehiclesDbContext.VehiclesMake.ToDictionaryAsync(x => x.Id, x => x.Name);                              
-            return await Task.Run(() => query);
+            var m = await Task.Run(() =>  _vehiclesDbContext.VehiclesModel.FindAsync(id));
+            if(m == null)
+            {
+                return false;
+            }
+            return await _vehiclesDbContext.Remove(m);
         }
 
-        #region Make
+
+        #endregion
+
+        #region VehicleMake
         public async Task<bool> InsertMake(POCO.VehicleMake entity)
         {
             if (entity == null || entity.Id != 0)
             {
                 return false;
             }
-            //TOODOO:: Try with mapper 
-            VehicleMake temp = new VehicleMake()
-            {
-                Name = entity.Name,
-                Country = entity.Country,
-                CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
-            };
-
-            await _vehiclesDbContext.Insert(temp);
+            VehicleMake mapped = _mapper.Map<VehicleMake>(entity);
+            mapped.CreatedAt = DateTime.UtcNow;
+            mapped.UpdatedAt = DateTime.UtcNow;
+            await _vehiclesDbContext.Insert(mapped);
             return true;
         }
 
@@ -170,25 +147,6 @@ namespace MonoTask.Core.Services
             var result = await Task.Run(() => _vehiclesDbContext.Get<VehicleMake>(id));
             return _mapper.Map<POCO.VehicleMake>(result);
         }
-
-
-        public async Task<bool> EditMake(POCO.VehicleMake model)
-        {
-            VehicleMake temp = _vehiclesDbContext.VehiclesMake.Where(i => i.Id == model.Id).FirstOrDefault();
-            if (temp == null)
-            {
-                return false;
-            }
-            else
-            {
-                temp.Name = model.Name;
-                temp.Country = model.Country;
-                temp.UpdatedAt = DateTime.UtcNow;
-                await _vehiclesDbContext.SaveAsync();
-                return true;
-            }
-        }
-
         public async Task<List<POCO.VehicleMake>> GetMakes(int page, string sortBy, string sortOrder, string searchValue)
         {
             var query = _vehiclesDbContext.VehiclesMake.Where(i => i.Id != null);
@@ -200,7 +158,7 @@ namespace MonoTask.Core.Services
                     break;
                 case "Country":
                     query = sortOrder == "desc" ? query.OrderByDescending(i => i.Country) : query.OrderBy(i => i.Country);
-                    break;           
+                    break;
                 default:
                     query = sortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
                     break;
@@ -220,6 +178,30 @@ namespace MonoTask.Core.Services
             return await Task.Run(() => _vehiclesDbContext.VehiclesMake.Where(i => i.Name.StartsWith(searchValue)).Count());
         }
 
+        public async Task<Dictionary<int, string>> GetMakeDropdown()
+        {
+            //TODO: This should be limited
+            var query = _vehiclesDbContext.VehiclesMake.ToDictionaryAsync(x => x.Id, x => x.Name);
+            return await Task.Run(() => query);
+        }
+
+        public async Task<bool> EditMake(POCO.VehicleMake model)
+        {
+            VehicleMake temp = _vehiclesDbContext.VehiclesMake.Where(i => i.Id == model.Id).FirstOrDefault();
+            if (temp == null)
+            {
+                return false;
+            }
+            else
+            {
+                temp.Name = model.Name;
+                temp.Country = model.Country;
+                temp.UpdatedAt = DateTime.UtcNow;
+                await _vehiclesDbContext.SaveAsync();
+                return true;
+            }
+        }
+
         public async Task<bool> DeleteMake(int id)
         {
             //TODO: Remove all Model objects that are maked from that maker if needed 
@@ -231,6 +213,7 @@ namespace MonoTask.Core.Services
             }
             return await _vehiclesDbContext.Remove(m);
         }
+
         #endregion
     }
 }

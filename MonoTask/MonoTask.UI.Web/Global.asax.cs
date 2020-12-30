@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using MonoTask.Infrastructure.DAL.AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
@@ -18,9 +12,6 @@ namespace MonoTask.UI.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //AutoMapper.Mapper.Initialize(a => a.AddProfile)
-            //var config = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapperProfile>());
-            //var mapper = config.CreateMapper();
         }
     }
 }

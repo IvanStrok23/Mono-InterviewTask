@@ -30,15 +30,40 @@
             window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();       
         }
 
+        function SetModalDropdown(makeId) {
+            $.ajax({
+                type: "POST",
+                url: '/ModelAdministration/GetMakeDropdown',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ModalMakeDropdown').html('')
+                    if (response.data.length > 0) {
+                        let data = $.parseJSON(response.data);
+                        $.each(data, function (key, value) {
+                            $('#ModalMakeDropdown')
+                                .append($('<option>', { value: key })
+                                    .text(value));
+                        });
+                    }
+                    $('#ModalMakeDropdown').val(makeId);
+                },
+                error: function (jqXHR, response) {
+                    console.log("Error! HTTP Status: " + jqXHR.status + " Message: " + response.message);
+                }
+            });
+
+        }
+
         function EditModel(id,name,year,makeId) {
             $("#ModalTitle").html("Edit Model Record");
             $("#MyModal").modal();
-
             $("#ModalIdShow").show();
             $("#ModalId").text(id);
             $("#ModalMakeDropdown").val(makeId);
             $("#ModalName").val(name);
             $("#ModalYear").val(year);
+            SetModalDropdown(makeId);
         }
 
         function AddModel() {
@@ -49,6 +74,8 @@
             $("#ModalId").text(null);
             $("#ModalName").val("");
             $("#ModalYear").val("");
+            SetModalDropdown(0);
+
         }
 
         $("#SaveModel").click(function () {
@@ -154,7 +181,7 @@ else
                         </div>
                         <div class="form-group">
                             <label class="modal-label">Make:</label>
-                            @Html.DropDownList("selectedPage", (SelectList)ViewBag.MakeDropdownList, new { id = "ModalMakeDropdown", @class="modal-input"})
+                            @Html.DropDownList("selectedMake", (SelectList)ViewBag.MakeDropdownList, new { id = "ModalMakeDropdown", @class="modal-input"})
                         </div>
                         <div class="form-group">
                             <label class="modal-label">Year:</label>

@@ -1,10 +1,6 @@
 ﻿using MonoTask.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using POCO = MonoTask.Core.Entities;
 
@@ -17,6 +13,7 @@ namespace MonoTask.UI.Web.Controllers
         {
             _vehicleService = vehicleService;
         }
+
         public async Task<ActionResult> Index(int page = 1, string sortBy = "Name", string sortOrder = "asc", string searchValue = "")
         {
 
@@ -32,16 +29,6 @@ namespace MonoTask.UI.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Delete(int id)
-        {
-            bool response = await _vehicleService.DeleteMake(id);
-            if (response)
-            {
-                return getResult(HttpStatusCode.OK, "Deletion success!");
-            }
-            return getResult(HttpStatusCode.BadRequest, "BadRequest");
-        }
-
         public async Task<ActionResult> Insert(POCO.VehicleMake model)
         {
             bool response = await _vehicleService.InsertMake(model);
@@ -51,6 +38,8 @@ namespace MonoTask.UI.Web.Controllers
             }
             return getResult(HttpStatusCode.BadRequest, "BadRequest");
         }
+
+        [HttpPost]
         public async Task<ActionResult> Edit(POCO.VehicleMake model)
         {
             bool response = await _vehicleService.EditMake(model);
@@ -61,6 +50,19 @@ namespace MonoTask.UI.Web.Controllers
             return getResult(HttpStatusCode.BadRequest, "BadRequest");
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
+        {
+            bool response = await _vehicleService.DeleteMake(id);
+            if (response)
+            {
+                return getResult(HttpStatusCode.OK, "Deletion success!");
+            }
+            return getResult(HttpStatusCode.BadRequest, "BadRequest");
+        }
+
+       
         private JsonResult getResult(HttpStatusCode code, string text)
         {
             Response.StatusCode = (int)code;
