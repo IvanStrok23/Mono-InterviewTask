@@ -10,6 +10,8 @@ namespace MonoTask.UI.Web.App_Start
     using global::Ninject.Web.Common;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using MonoTask.Core.Services;
+    using MonoTask.Core.Services.Interfaces;
+    using MonoTask.Core.Services.Services;
     using MonoTask.Infrastructure.DAL;
     using MonoTask.Infrastructure.DAL.AutoMapper;
     using MonoTask.Infrastructure.DAL.Entities;
@@ -69,7 +71,8 @@ namespace MonoTask.UI.Web.App_Start
             
             kernel.Bind<IMapper>().ToConstructor(c => new Mapper(config)).InSingletonScope();
             kernel.Bind<IVehiclesDbContext>().To<VehiclesDbContext>();
-            kernel.Bind<IVehicleService>().To<VehicleService>();
+            kernel.Bind<IVehicleMakeService>().To<VehicleMakeService>();
+            kernel.Bind<IVehicleModelService>().To<VehicleModelService>();
             
         }        
     }

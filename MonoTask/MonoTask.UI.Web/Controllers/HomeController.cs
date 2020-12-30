@@ -1,4 +1,5 @@
 ﻿using MonoTask.Core.Services;
+using MonoTask.Core.Services.Interfaces;
 using MonoTask.UI.Web.Helper;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,12 +10,15 @@ namespace MonoTask.UI.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IVehicleService _vehicleService;
-        public HomeController(IVehicleService vehicleService)
-        {
-            _vehicleService = vehicleService;
-        }
 
+        private readonly IVehicleModelService _vehicleModelService;
+        private readonly IVehicleMakeService _vehicleMakeService;
+
+        public HomeController(IVehicleModelService vehicleModelService, IVehicleMakeService vehicleMakeService)
+        {
+            _vehicleModelService = vehicleModelService;
+            _vehicleMakeService = vehicleMakeService;
+        }
         public ActionResult Index()
         {
 
@@ -27,10 +31,10 @@ namespace MonoTask.UI.Web.Controllers
             TestData testData = new TestData();
             foreach (var makeItem in testData.MakeList)
             {
-                int id = await _vehicleService.InsertMake(makeItem);
+                int id = await _vehicleMakeService.InsertMake(makeItem);
                 foreach (var modelItem in testData.GetHardCodedModelsByMakeName(makeItem.Name,id))
                 {
-                    _vehicleService.InsertModel(modelItem);
+                    _vehicleModelService.InsertModel(modelItem);
                 }
             }
             Response.StatusCode = (int)HttpStatusCode.OK;

@@ -189,8 +189,8 @@
     <Compile Include="AutoMapper\AutoMapperProfile.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IVehiclesDbContext.cs" />
-    <Compile Include="DBEntities\VehicleMake.cs" />
-    <Compile Include="DBEntities\VehicleModel.cs" />
+    <Compile Include="DBEntities\VehicleMakeEntity.cs" />
+    <Compile Include="DBEntities\VehicleModelEntity.cs" />
     <Compile Include="Migrations\202012231510461_Init.cs" />
     <Compile Include="Migrations\202012231510461_Init.designer.cs">
       <DependentUpon>202012231510461_Init.cs</DependentUpon>
@@ -198,6 +198,10 @@
     <Compile Include="Migrations\202012272341106_ModeNameAdded.cs" />
     <Compile Include="Migrations\202012272341106_ModeNameAdded.designer.cs">
       <DependentUpon>202012272341106_ModeNameAdded.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012301630261_Entity sufix.cs" />
+    <Compile Include="Migrations\202012301630261_Entity sufix.designer.cs">
+      <DependentUpon>202012301630261_Entity sufix.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -259,6 +263,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012272341106_ModeNameAdded.resx">
       <DependentUpon>202012272341106_ModeNameAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012301630261_Entity sufix.resx">
+      <DependentUpon>202012301630261_Entity sufix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

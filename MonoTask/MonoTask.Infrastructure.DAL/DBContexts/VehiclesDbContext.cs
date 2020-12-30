@@ -8,8 +8,8 @@ namespace MonoTask.Infrastructure.DAL
 {
     public class VehiclesDbContext : DbContext, IVehiclesDbContext
     {
-        public DbSet<VehicleMake> VehiclesMake { get; set; }
-        public DbSet<VehicleModel> VehiclesModel { get; set; }
+        public DbSet<VehicleMakeEntity> VehiclesMake { get; set; }
+        public DbSet<VehicleModelEntity> VehiclesModel { get; set; }
 
 
         public async Task<T> Get<T>(int id) where T : class, IEntity

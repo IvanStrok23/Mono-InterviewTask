@@ -3,7 +3,7 @@ using System;
 
 namespace MonoTask.Infrastructure.DAL.Entities
 {
-    public class VehicleModel : IEntity
+    public class VehicleModelEntity : IEntity
     {
         public int Id { get; set; }
         public int MakeId { get; set; }

@@ -1,4 +1,6 @@
 ﻿using MonoTask.Core.Services;
+using MonoTask.Core.Services.Interfaces;
+using MonoTask.UI.Web.Helper;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -8,22 +10,23 @@ namespace MonoTask.UI.Web.Controllers
 {
     public class MakeAdministrationController : Controller
     {
-        private readonly IVehicleService _vehicleService;
-        public MakeAdministrationController(IVehicleService vehicleService)
+        private readonly IVehicleMakeService _vehicleMakeService;
+        public MakeAdministrationController(IVehicleMakeService vehicleMakeService)
         {
-            _vehicleService = vehicleService;
+            _vehicleMakeService = vehicleMakeService;
         }
 
-        public async Task<ActionResult> Index(int page = 1, string sortBy = "Name", string sortOrder = "asc", string searchValue = "")
+        public async Task<ActionResult> Index(SortingData sortingData)
         {
+            sortingData = sortingData == null ? new SortingData() : sortingData;
 
-            page = page <= 0 ? 1 : page;
-            var items = await _vehicleService.GetMakes(page, sortBy, sortOrder, searchValue);
-            var count = await _vehicleService.GetMakeCount(searchValue);
+            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
+            var items = await _vehicleMakeService.GetMakes(sortingData);
+            var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
             ViewBag.Items = items;
-            ViewBag.SortOrder = sortOrder;
-            ViewBag.SearchValue = searchValue;
-            ViewBag.CurrentPage = page;
+            ViewBag.SortOrder = sortingData.SortOrder;
+            ViewBag.SearchValue = sortingData.SearchValue;
+            ViewBag.CurrentPage = sortingData.Page;
             ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1);
             return View();
         }
@@ -31,7 +34,7 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Insert(POCO.VehicleMake model)
         {
-            int id = await _vehicleService.InsertMake(model);
+            int id = await _vehicleMakeService.InsertMake(model);
             if (id != 0)
             {
                 return getResult(HttpStatusCode.OK, "Insert success!");
@@ -42,7 +45,7 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(POCO.VehicleMake model)
         {
-            bool response = await _vehicleService.EditMake(model);
+            bool response = await _vehicleMakeService.EditMake(model);
             if (response)
             {
                 return getResult(HttpStatusCode.OK, "Edit success!");
@@ -54,7 +57,7 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
-            bool response = await _vehicleService.DeleteMake(id);
+            bool response = await _vehicleMakeService.DeleteMake(id);
             if (response)
             {
                 return getResult(HttpStatusCode.OK, "Deletion success!");

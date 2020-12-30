@@ -9,10 +9,10 @@ namespace MonoTask.Infrastructure.DAL.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<VehicleMake, POCO.VehicleMake>();
-            CreateMap<POCO.VehicleMake, VehicleMake>();
-            CreateMap<VehicleModel, POCO.VehicleModel>();
-            CreateMap<POCO.VehicleModel, VehicleModel>();
+            CreateMap<VehicleMakeEntity, POCO.VehicleMake>();
+            CreateMap<POCO.VehicleMake, VehicleMakeEntity>();
+            CreateMap<VehicleModelEntity, POCO.VehicleModel>();
+            CreateMap<POCO.VehicleModel, VehicleModelEntity>();
             
         }
     }

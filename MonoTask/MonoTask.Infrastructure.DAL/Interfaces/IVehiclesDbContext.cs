@@ -7,8 +7,8 @@ namespace MonoTask.Infrastructure.DAL.Entities
 {
     public interface IVehiclesDbContext
     {
-        DbSet<VehicleMake> VehiclesMake { get; set; }
-        DbSet<VehicleModel> VehiclesModel { get; set; }
+        DbSet<VehicleMakeEntity> VehiclesMake { get; set; }
+        DbSet<VehicleModelEntity> VehiclesModel { get; set; }
         Task<T> Get<T>(int id) where T : class, IEntity;
         Task<int> Insert<T>(T entity) where T : class, IEntity;
         Task Insert<T>(List<T> entities) where T : class, IEntity;

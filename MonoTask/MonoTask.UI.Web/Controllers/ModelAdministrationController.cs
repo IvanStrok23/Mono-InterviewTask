@@ -1,4 +1,6 @@
 ﻿using MonoTask.Core.Services;
+using MonoTask.Core.Services.Interfaces;
+using MonoTask.UI.Web.Helper;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,21 +12,25 @@ namespace MonoTask.UI.Web.Controllers
 {
     public class ModelAdministrationController : Controller
     {
-        private readonly IVehicleService _vehicleService;
-        public ModelAdministrationController(IVehicleService vehicleService)
+        private readonly IVehicleModelService _vehicleModelService;
+        private readonly IVehicleMakeService _vehicleMakeService;
+        public ModelAdministrationController(IVehicleModelService vehicleModelService, IVehicleMakeService vehicleMakeService)
         {
-            _vehicleService = vehicleService;
+            _vehicleModelService = vehicleModelService;
+            _vehicleMakeService = vehicleMakeService;
         }
-        public async Task<ActionResult> Index(int page = 1,string sortBy = "Name",string sortOrder = "asc",string searchValue = "")
+        public async Task<ActionResult> Index(SortingData sortingData)
         {
-            page = page <= 0 ? 1 : page;
+            sortingData = sortingData == null ? new SortingData() : sortingData;
 
-            var items = await _vehicleService.GetModels(page, sortBy, sortOrder, searchValue);
-            var count = await _vehicleService.GetModelCount(searchValue);
+            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
+
+            var items = await _vehicleModelService.GetModels(sortingData);
+            var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
             ViewBag.Items = items;
-            ViewBag.SortOrder = sortOrder;
-            ViewBag.SearchValue = searchValue;
-            ViewBag.CurrentPage = page;
+            ViewBag.SortOrder = sortingData.SortOrder;
+            ViewBag.SearchValue = sortingData.SearchValue;
+            ViewBag.CurrentPage = sortingData.Page;
             ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1) ;
             if (ViewBag.MakeDropdownList == null)
             {
@@ -36,7 +42,7 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Insert(POCO.VehicleModel model)
         {
-            int id = await _vehicleService.InsertModel(model);
+            int id = await _vehicleModelService.InsertModel(model);
             if (id != 0)
             {
                 return getResult(HttpStatusCode.OK, "Insert success!");
@@ -48,7 +54,7 @@ namespace MonoTask.UI.Web.Controllers
         public async Task<ActionResult> GetMakeDropdown()
         {
             //TODO: Limit data
-            var makeDropdown = await _vehicleService.GetMakeDropdown();
+            var makeDropdown = await _vehicleMakeService.GetMakeDropdown();
             Response.StatusCode = (int)HttpStatusCode.OK;
             return Json(new { success = false, message = "Success!",data = Newtonsoft.Json.JsonConvert.SerializeObject(makeDropdown) }, JsonRequestBehavior.AllowGet);
 
@@ -57,7 +63,7 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(POCO.VehicleModel model)
         {
-            bool response = await _vehicleService.EditModel(model);
+            bool response = await _vehicleModelService.EditModel(model);
             if (response)
             {
                 return getResult(HttpStatusCode.OK, "Edit success!");
@@ -68,7 +74,7 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
-            bool response = await _vehicleService.DeleteModel(id);
+            bool response = await _vehicleModelService.DeleteModel(id);
             if (response)
             {
                 return getResult(HttpStatusCode.OK, "Deletion success!");
