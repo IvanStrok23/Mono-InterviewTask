@@ -1,9 +1,35 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+@section Scripts{
+    <script>
+
+        function InsertTestData() {
+            $.ajax({
+                type: "POST",
+                url: '/Home/InsertTestData',
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function (jqXHR, response) {
+                    alert("Error! HTTP Status: " + jqXHR.status + " Message: " + respons.message);
+                }
+            });
+
+        }
+
+    </script>
+}
 
 <br />
 <br />
 <br />
 <h2>Mono Task</h2>
+<br />
+<br />
+<br />
 
+<button type="button" id="btnInsertTest" class="btn btn-primary" onclick="InsertTestData()">
+    Insert Test Data
+</button>
