@@ -22,17 +22,16 @@ namespace MonoTask.Core.Services
 
         #region VehicleModel
 
-        public async Task<bool> InsertModel(POCO.VehicleModel entity)
+        public async Task<int> InsertModel(POCO.VehicleModel entity)
         {
             if (entity == null || entity.Id != 0)
             {
-                return false;
+                return 0;
             }
             VehicleModel mapped = _mapper.Map<VehicleModel>(entity);
             mapped.CreatedAt = DateTime.UtcNow;
             mapped.UpdatedAt = DateTime.UtcNow;
-            await _vehiclesDbContext.Insert(mapped);
-            return true;
+            return await _vehiclesDbContext.Insert(mapped);
         }
 
         public async Task<POCO.VehicleModel> GetModelById(int id)
@@ -129,17 +128,16 @@ namespace MonoTask.Core.Services
         #endregion
 
         #region VehicleMake
-        public async Task<bool> InsertMake(POCO.VehicleMake entity)
+        public async Task<int> InsertMake(POCO.VehicleMake entity)
         {
             if (entity == null || entity.Id != 0)
             {
-                return false;
+                return 0;
             }
             VehicleMake mapped = _mapper.Map<VehicleMake>(entity);
             mapped.CreatedAt = DateTime.UtcNow;
             mapped.UpdatedAt = DateTime.UtcNow;
-            await _vehiclesDbContext.Insert(mapped);
-            return true;
+            return await _vehiclesDbContext.Insert(mapped);
         }
 
         public async Task<POCO.VehicleMake> GetMakeById(int id)

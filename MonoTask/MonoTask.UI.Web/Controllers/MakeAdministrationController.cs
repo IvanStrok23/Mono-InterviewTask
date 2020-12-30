@@ -31,8 +31,8 @@ namespace MonoTask.UI.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Insert(POCO.VehicleMake model)
         {
-            bool response = await _vehicleService.InsertMake(model);
-            if (response)
+            int id = await _vehicleService.InsertMake(model);
+            if (id != 0)
             {
                 return getResult(HttpStatusCode.OK, "Insert success!");
             }

@@ -7,8 +7,8 @@ namespace MonoTask.Core.Services
     public interface IVehicleService
     {
 
-        Task<bool> InsertModel(POCO.VehicleModel entity);
-        Task<bool> InsertMake(POCO.VehicleMake entity);
+        Task<int> InsertModel(POCO.VehicleModel entity);
+        Task<int> InsertMake(POCO.VehicleMake entity);
         Task<POCO.VehicleModel> GetModelById(int id);
         Task<POCO.VehicleMake> GetMakeById(int id);
         Task<bool> EditModel(POCO.VehicleModel model);
