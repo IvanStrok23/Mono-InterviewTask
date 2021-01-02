@@ -22,12 +22,22 @@
 
         }
 
-        function RefreshPage() {
-            window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+        function SearchByName() {
+            window.location.href =
+                "@Url.Action("SearchByName", "ModelAdministration")" +
+                "?page=" + 1 +
+                "&sortBy=" + "Name" +
+                "&sortOrder=" + "@ViewBag.SortOrder" +
+                "&searchValue=" + $("#searchValue").val();
         }
 
-        function SearchValueChange() {
-            window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();       
+        function SoryByColumn(column) {
+             window.location.href =
+                 "@Url.Action("SoryByColumn", "ModelAdministration")"
+                 + "?page=" + 1
+                 + "&sortBy=" + column
+                 + "&sortOrder=" + "@ViewBag.SortOrder"
+                 + "&searchValue=" + $("#searchValue").val();
         }
 
         function SetModalDropdown(makeId) {
@@ -86,8 +96,8 @@
                 data: JSON.stringify(model),
                 dataType: "json", contentType: "application/json; charset=utf-8",
                 success: function (response) {
-                    $("#MyModal").modal("hide");
-                    window.location.href = "@Url.Action("Index", "ModelAdministration")" + "?page=" + @ViewBag.CurrentPage  + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+                    $("#MyModal").modal("hide");//TODO :: Search by name ?
+                    window.location.href = "@Url.Action("Index", "ModelAdministration")";
                     alert(response.message);
                 },
                 error: function (jqXHR, response) {
@@ -104,7 +114,7 @@
 <br />
 <br />
 <input type="text" id="searchValue" value="@ViewBag.SearchValue" />
-<button type="button" id="btnSearch" class="btn btn-primary" onclick="RefreshPage()">
+<button type="button" id="btnSearch" class="btn btn-primary" onclick="SearchByName()">
     Search
 </button>
 @if (ViewBag.Items.Count > 0)
@@ -113,14 +123,14 @@
         <div>
             @if (ViewBag.CurrentPage > 1)
             {
-                @Html.ActionLink("previous page", "Index", new { page = ViewBag.CurrentPage - 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+                @Html.ActionLink("previous page", "GetByPage", new { page = ViewBag.CurrentPage - 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
             }
         </div>
         <div style="margin: 0px 10px;">@ViewBag.CurrentPage</div>
         <div style="min-width:100px">
             @if (ViewBag.CurrentPage < ViewBag.PageMax)
             {
-                @Html.ActionLink("next page", "Index", new { page = ViewBag.CurrentPage + 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+                @Html.ActionLink("next page", "GetByPage", new { page = ViewBag.CurrentPage + 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
             }
         </div>
     </div>
@@ -128,13 +138,13 @@
 
         <tr>
             <th>
-                @Html.ActionLink("Name", "Index", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+                @Html.ActionLink("Name", "SoryByColumn", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th>
-                @Html.ActionLink("Year", "Index", new { page = 1, sortBy = "Year", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+                @Html.ActionLink("Year", "SoryByColumn", new { page = 1, sortBy = "Year", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th>
-                @Html.ActionLink("Make", "Index", new { page = 1, sortBy = "Make", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+                @Html.ActionLink("Make", "SoryByColumn", new { page = 1, sortBy = "Make", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th style="width: 140px;">Actions</th>
         </tr>
@@ -181,7 +191,7 @@ else
                         </div>
                         <div class="form-group">
                             <label class="modal-label">Make:</label>
-                            @Html.DropDownList("selectedMake", (SelectList)ViewBag.MakeDropdownList, new { id = "ModalMakeDropdown", @class="modal-input"})
+                            <select id="ModalMakeDropdown" class="modal-input"></select>
                         </div>
                         <div class="form-group">
                             <label class="modal-label">Year:</label>

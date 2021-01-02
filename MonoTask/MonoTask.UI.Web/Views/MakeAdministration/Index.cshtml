@@ -22,12 +22,22 @@
 
         }
 
-        function RefreshPage() {
-            window.location.href = "@Url.Action("Index", "MakeAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+        function SearchByName() {
+            window.location.href =
+                "@Url.Action("Index", "SearchByName")" +
+                "?page=" + 1 +
+                "&sortBy=" + "Name" +
+                "&sortOrder=" + "@ViewBag.SortOrder" +
+                "&searchValue=" + $("#searchValue").val();
         }
 
-        function SearchValueChange() {
-            window.location.href = "@Url.Action("Index", "MakeAdministration")" + "?page=" + 1 + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+        function SoryByColumn(column) {
+             window.location.href =
+                 "@Url.Action("SoryByColumn", "MakeAdministration")"
+                 + "?page=" + 1
+                 + "&sortBy=" + column
+                 + "&sortOrder=" + "@ViewBag.SortOrder"
+                 + "&searchValue=" + $("#searchValue").val();
         }
 
         function EditMake(id,name,country) {
@@ -58,7 +68,7 @@
                 dataType: "json", contentType: "application/json; charset=utf-8",
                 success: function (response) {
                     $("#MyModal").modal("hide");
-                    window.location.href = "@Url.Action("Index", "MakeAdministration")" + "?page=" + @ViewBag.CurrentPage  + "&sortBy=" + "Name" + "&sortOrder=" + "@ViewBag.SortOrder" + "&searchValue=" + $("#searchValue").val();
+                    window.location.href = "@Url.Action("Index", "MakeAdministration")";
                     alert(response.message);
                 },
                 error: function (jqXHR, response) {
@@ -76,7 +86,7 @@
 <br />
 <br />
 <input type="text" id="searchValue" value="@ViewBag.SearchValue" />
-<button type="button" id="btnSearch" class="btn btn-primary" onclick="RefreshPage()">
+<button type="button" id="btnSearch" class="btn btn-primary" onclick="SearchByName()">
     Search
 </button>
 @if (ViewBag.Items.Count > 0)
@@ -85,14 +95,14 @@
         <div>
             @if (ViewBag.CurrentPage > 1)
             {
-                @Html.ActionLink("previous page", "Index", new { page = ViewBag.CurrentPage - 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+                @Html.ActionLink("previous page", "GetByPage", new { page = ViewBag.CurrentPage - 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
             }
         </div>
         <div style="margin: 0px 10px;">@ViewBag.CurrentPage</div>
         <div style="min-width:100px">
             @if (ViewBag.CurrentPage < ViewBag.PageMax)
             {
-                @Html.ActionLink("next page", "Index", new { page = ViewBag.CurrentPage + 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
+                @Html.ActionLink("next page", "GetByPage", new { page = ViewBag.CurrentPage + 1, sortBy = "Name", sortOrder = ViewBag.SortOrder, searchValue = ViewBag.SearchValue })
             }
         </div>
     </div>
@@ -100,10 +110,10 @@
 
         <tr>
             <th>
-                @Html.ActionLink("Name", "Index", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+                @Html.ActionLink("Name", "SoryByColumn", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th>
-                @Html.ActionLink("Country", "Index", new { page = 1, sortBy = "Country", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
+                @Html.ActionLink("Country", "SoryByColumn", new { page = 1, sortBy = "Country", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th style="width: 140px;">Actions</th>
         </tr>

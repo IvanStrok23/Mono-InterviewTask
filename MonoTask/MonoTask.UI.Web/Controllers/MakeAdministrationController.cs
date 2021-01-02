@@ -16,19 +16,53 @@ namespace MonoTask.UI.Web.Controllers
             _vehicleMakeService = vehicleMakeService;
         }
 
-        public async Task<ActionResult> Index(SortingData sortingData)
+        public async Task<ActionResult> Index()
         {
-            sortingData = sortingData == null ? new SortingData() : sortingData;
 
-            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
-            var items = await _vehicleMakeService.GetMakes(sortingData);
+            var items = await _vehicleMakeService.GetMakes();
+            var count = await _vehicleMakeService.GetMakeCount();
+            ViewBag.Items = items;
+            ViewBag.SortOrder = "asc";
+            ViewBag.CurrentPage = 1;
+            ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1);
+            return View();
+        }
+
+        public async Task<ActionResult> SoryByColumn(TableFilterData sortingData)
+        {
+
+            var items = await _vehicleMakeService.GetMakesSortedByColumn(sortingData);
             var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
             ViewBag.Items = items;
+            setViewBagFilterData(sortingData, count);
+            return View("Index");
+        }
+        public async Task<ActionResult> GetByPage(TableFilterData sortingData)
+        {
+            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
+            var items = await _vehicleMakeService.GetMakesByPage(sortingData);
+            var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
+            ViewBag.Items = items;
+            setViewBagFilterData(sortingData, count);
+            return View("Index");
+        }
+
+        public async Task<ActionResult> SearchByName(TableFilterData sortingData)
+        {
+            sortingData.SearchValue = sortingData.SearchValue == null ? "" : sortingData.SearchValue;
+            var items = await _vehicleMakeService.GetMakesByName(sortingData);
+            var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
+            ViewBag.Items = items;
+            setViewBagFilterData(sortingData, count);
+            return View("Index");
+        }
+
+        private void setViewBagFilterData(TableFilterData sortingData, int setCount)
+        {
             ViewBag.SortOrder = sortingData.SortOrder;
             ViewBag.SearchValue = sortingData.SearchValue;
             ViewBag.CurrentPage = sortingData.Page;
-            ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1);
-            return View();
+            ViewBag.PageMax = setCount / 10 + (setCount % 10 == 0 ? 0 : 1);
         }
 
         [HttpPost]

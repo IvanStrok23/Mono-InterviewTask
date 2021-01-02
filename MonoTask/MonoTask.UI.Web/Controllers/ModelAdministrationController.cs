@@ -19,24 +19,52 @@ namespace MonoTask.UI.Web.Controllers
             _vehicleModelService = vehicleModelService;
             _vehicleMakeService = vehicleMakeService;
         }
-        public async Task<ActionResult> Index(SortingData sortingData)
+        public async Task<ActionResult> Index()
         {
-            sortingData = sortingData == null ? new SortingData() : sortingData;
+            var items = await _vehicleModelService.GetModels();
+            var count = await _vehicleModelService.GetModelCount();
+            ViewBag.Items = items;
+            ViewBag.SortOrder = "asc";
+            ViewBag.CurrentPage = 1;
+            ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1);
+            return View();
+        }
 
-            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
 
-            var items = await _vehicleModelService.GetModels(sortingData);
+        public async Task<ActionResult> SoryByColumn(TableFilterData sortingData)
+        {          
+            var items = await _vehicleModelService.GetModelsSortedByColumn(sortingData);
             var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
             ViewBag.Items = items;
+            setViewBagFilterData(sortingData, count);
+            return View("Index");          
+        }
+
+        public async Task<ActionResult> GetByPage(TableFilterData sortingData)
+        {
+            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
+            var items = await _vehicleModelService.GetModelsByPage(sortingData);
+            var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
+            ViewBag.Items = items;
+            setViewBagFilterData(sortingData, count);
+            return View("Index");
+        }
+
+        public async Task<ActionResult> SearchByName(TableFilterData sortingData)
+        {
+            sortingData.SearchValue = sortingData.SearchValue == null ? "" : sortingData.SearchValue;
+            var items = await _vehicleModelService.GetModelsByName(sortingData);
+            var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
+            ViewBag.Items = items;
+            setViewBagFilterData(sortingData, count);
+            return View("Index");
+        }
+        private void setViewBagFilterData(TableFilterData sortingData, int setCount)
+        {
             ViewBag.SortOrder = sortingData.SortOrder;
             ViewBag.SearchValue = sortingData.SearchValue;
             ViewBag.CurrentPage = sortingData.Page;
-            ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1) ;
-            if (ViewBag.MakeDropdownList == null)
-            {
-                ViewBag.MakeDropdownList = new SelectList(new Dictionary<int, string>() { { 0, "" } }, "Key", "Value", 1);
-            }
-            return View();
+            ViewBag.PageMax = setCount / 10 + (setCount % 10 == 0 ? 0 : 1);
         }
 
         [HttpPost]
@@ -87,5 +115,7 @@ namespace MonoTask.UI.Web.Controllers
             Response.StatusCode = (int)code;
             return Json(new { success = false, message = text }, JsonRequestBehavior.AllowGet);
         }
+
+
     }
 }

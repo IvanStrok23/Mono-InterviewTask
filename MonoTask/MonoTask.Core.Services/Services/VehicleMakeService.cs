@@ -39,33 +39,42 @@ namespace MonoTask.Core.Services.Services
             var result = await Task.Run(() => _vehiclesDbContext.Get<VehicleMakeEntity>(id));
             return _mapper.Map<POCO.VehicleMake>(result);
         }
-        public async Task<List<POCO.VehicleMake>> GetMakes(SortingData sortingData)
+
+        public async Task<List<POCO.VehicleMake>> GetMakesSortedByColumn(TableFilterData filterData)
         {
-            var query = _vehiclesDbContext.VehiclesMake.Where(i => i.Id != null);
 
-            switch (sortingData.SortBy)
-            {
-                case "Name":
-                    query = sortingData.SortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
-                    break;
-                case "Country":
-                    query = sortingData.SortOrder == "desc" ? query.OrderByDescending(i => i.Country) : query.OrderBy(i => i.Country);
-                    break;
-                default:
-                    query = sortingData.SortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
-                    break;
-            }
+            var query = from make in _vehiclesDbContext.VehiclesMake
+                        select make;
+            sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
 
-            if (!String.IsNullOrWhiteSpace(sortingData.SearchValue))
-            {
-                query = query.Where(i => i.Name.StartsWith(sortingData.SearchValue));
-            }
-            query = query.Skip((sortingData.Page - 1) * 10).Take(10);
-
-            var result = await Task.Run(() => query.ToListAsync());
+            var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync());
             return _mapper.Map<List<POCO.VehicleMake>>(result);
         }
-        public async Task<int> GetMakeCount(string searchValue)
+
+        public async Task<List<POCO.VehicleMake>> GetMakesByPage(TableFilterData filterData)
+        {
+            var query = from make in _vehiclesDbContext.VehiclesMake
+                        select make;
+            sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
+            var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(filterData.SearchValue)).Skip((filterData.Page - 1) * 10).Take(10).ToListAsync());
+            return _mapper.Map<List<POCO.VehicleMake>>(result);
+        }
+
+        public async Task<List<POCO.VehicleMake>> GetMakesByName(TableFilterData filterData)
+        {
+            var result = await Task.Run(() => _vehiclesDbContext.VehiclesMake.OrderBy(i => i.Name).Where(i => i.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync());
+            return _mapper.Map<List<POCO.VehicleMake>>(result);
+        }
+
+
+
+        public async Task<List<POCO.VehicleMake>> GetMakes()
+        {
+            var result = await Task.Run(() => _vehiclesDbContext.VehiclesMake.OrderBy(i => i.Name).Take(10).ToListAsync());
+            return _mapper.Map<List<POCO.VehicleMake>>(result);
+        }
+
+        public async Task<int> GetMakeCount(string searchValue = "")
         {
             return await Task.Run(() => _vehiclesDbContext.VehiclesMake.Where(i => i.Name.StartsWith(searchValue)).Count());
         }
@@ -73,6 +82,7 @@ namespace MonoTask.Core.Services.Services
         public async Task<Dictionary<int, string>> GetMakeDropdown()
         {
             //TODO: This should be limited
+
             var query = _vehiclesDbContext.VehiclesMake.ToDictionaryAsync(x => x.Id, x => x.Name);
             return await Task.Run(() => query);
         }
@@ -105,5 +115,23 @@ namespace MonoTask.Core.Services.Services
             }
             return await _vehiclesDbContext.Remove(m);
         }
+
+        private void sortByColumn(ref IQueryable<VehicleMakeEntity> query, string sortBy, string sortOrder)
+        {
+
+            switch (sortBy)
+            {
+                case "Name":
+                    query = sortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
+                    break;
+                case "Country":
+                    query = sortOrder == "desc" ? query.OrderByDescending(i => i.Country) : query.OrderBy(i => i.Country);
+                    break;
+                default:
+                    query = sortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
+                    break;
+            }
+        }
     }
+
 }

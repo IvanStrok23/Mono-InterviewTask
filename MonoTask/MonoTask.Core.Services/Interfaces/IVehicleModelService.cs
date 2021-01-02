@@ -14,8 +14,11 @@ namespace MonoTask.Core.Services.Interfaces
         Task<int> InsertModel(POCO.VehicleModel entity);
         Task<POCO.VehicleModel> GetModelById(int id);
         Task<bool> EditModel(POCO.VehicleModel model);
-        Task<List<POCO.VehicleModel>> GetModels(SortingData sortingData);
-        Task<int> GetModelCount(string searchValue);
+        Task<List<POCO.VehicleModel>> GetModels();
+        Task<List<POCO.VehicleModel>> GetModelsSortedByColumn(TableFilterData filterData);
+        Task<List<POCO.VehicleModel>> GetModelsByPage(TableFilterData filterData);
+        Task<List<POCO.VehicleModel>> GetModelsByName(TableFilterData filterData);
+        Task<int> GetModelCount(string searchValue = "");
         Task<bool> DeleteModel(int id);
 
     }

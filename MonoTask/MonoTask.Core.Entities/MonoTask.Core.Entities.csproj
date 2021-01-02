@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\SortingData.cs" />
+    <Compile Include="Helpers\TableFilterData.cs" />
     <Compile Include="Helpers\TestData.cs" />
     <Compile Include="POCO\VehicleMake.cs" />
     <Compile Include="POCO\VehicleModel.cs" />
