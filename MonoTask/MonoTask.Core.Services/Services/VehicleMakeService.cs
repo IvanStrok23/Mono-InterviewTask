@@ -43,18 +43,15 @@ namespace MonoTask.Core.Services.Services
         public async Task<List<POCO.VehicleMake>> GetMakesSortedByColumn(TableFilterData filterData)
         {
 
-            var query = from make in _vehiclesDbContext.VehiclesMake
-                        select make;
+            var query = from make in _vehiclesDbContext.VehiclesMake select make;
             sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
-
             var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync());
             return _mapper.Map<List<POCO.VehicleMake>>(result);
         }
 
         public async Task<List<POCO.VehicleMake>> GetMakesByPage(TableFilterData filterData)
         {
-            var query = from make in _vehiclesDbContext.VehiclesMake
-                        select make;
+            var query = from make in _vehiclesDbContext.VehiclesMake select make;
             sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
             var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(filterData.SearchValue)).Skip((filterData.Page - 1) * 10).Take(10).ToListAsync());
             return _mapper.Map<List<POCO.VehicleMake>>(result);
