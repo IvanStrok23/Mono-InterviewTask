@@ -9,7 +9,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using POCO = MonoTask.Core.Entities;
-using AutoMapper.QueryableExtensions;
+
 
 namespace MonoTask.Core.Services.Services
 {
@@ -37,18 +37,23 @@ namespace MonoTask.Core.Services.Services
 
         public async Task<POCO.VehicleModel> GetModelById(int id)
         {
-            var queryRes = await _vehiclesDbContext.VehiclesModel.Where(m => m.Id == id).GroupJoin(
-                   _vehiclesDbContext.VehiclesMake,
-                   model => model.MakeId,
-                   make => make.Id,
-                   (model, make) => new { Make = make, Model = model })
-                   .SelectMany(x => x.Make.DefaultIfEmpty(),
-                   (x, y) => new { Key = y.Name, Value = x.Model })
-                   .FirstOrDefaultAsync();
-
-            var keyPairRes = new KeyValuePair<string, VehicleModelEntity>(queryRes.Key, queryRes.Value));
-            return _mapper.Map<POCO.VehicleModel>(keyPairRes);
+            var query = from model in _vehiclesDbContext.VehiclesModel
+                        join make in _vehiclesDbContext.VehiclesMake on model.MakeId equals make.Id into mo
+                        from makeProp in mo.DefaultIfEmpty()
+                        where model.Id == id
+                        select new POCO.VehicleModel()
+                        {
+                            Id = model.Id,
+                            Name = model.Name,
+                            MakeId = model.MakeId,
+                            MakeName = makeProp.Name == null ? "Undefinded" : makeProp.Name,
+                            Year = model.Year,
+                            CreatedAt = model.CreatedAt,
+                            UpdatedAt = model.UpdatedAt
+                        };
+            return await Task.Run(() => query.FirstOrDefaultAsync());
         }
+
 
 
         public async Task<List<POCO.VehicleModel>> GetModelsSortedByColumn(TableFilterData filterData)
@@ -75,7 +80,6 @@ namespace MonoTask.Core.Services.Services
 
         public async Task<List<POCO.VehicleModel>> GetModelsByPage(TableFilterData filterData)
         {
-
             var query = from model in _vehiclesDbContext.VehiclesModel
                         join make in _vehiclesDbContext.VehiclesMake on model.MakeId equals make.Id into mo
                         from makeProp in mo.DefaultIfEmpty()
@@ -89,43 +93,62 @@ namespace MonoTask.Core.Services.Services
                             CreatedAt = model.CreatedAt,
                             UpdatedAt = model.UpdatedAt
                         };
-            sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
+           // sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
             searchByName(ref query, filterData.SearchValue);
+            switch (filterData.SortBy)
+            {
+                case "Name":
+                    query = filterData.SortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
+                    break;
+                case "Make":
+                    query = filterData.SortOrder == "desc" ? query.OrderByDescending(i => i.MakeName) : query.OrderBy(i => i.MakeName);
+                    break;
+                case "Year":
+                    query = filterData.SortOrder == "desc" ? query.OrderByDescending(i => i.Year) : query.OrderBy(i => i.Year);
+                    break;
+                default:
+                    query = filterData.SortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
+                    break;
+            }
             return await Task.Run(() => query.Skip((filterData.Page - 1) * 10).Take(10).ToListAsync());
         }
 
         public async Task<List<POCO.VehicleModel>> GetModelsByName(TableFilterData filterData)
         {
-
-            var queryRes = await _vehiclesDbContext.VehiclesModel.GroupJoin(
-                _vehiclesDbContext.VehiclesMake,
-                model => model.MakeId,
-                make => make.Id,
-                (model, make) => new { Make = make, Model = model })
-                .SelectMany(x => x.Make.DefaultIfEmpty(),
-                (x, y) => new { Key = y.Name, Value = x.Model })
-                .OrderBy(i => i.Value.Name).Where(i => i.Value.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync();
-
-            var keyPairRes = queryRes.Select(m => new KeyValuePair<string, VehicleModelEntity>(m.Key, m.Value));
-            return _mapper.Map<List<POCO.VehicleModel>>(keyPairRes);
-
+            var query = from model in _vehiclesDbContext.VehiclesModel
+                        join make in _vehiclesDbContext.VehiclesMake on model.MakeId equals make.Id into mo
+                        from makeProp in mo.DefaultIfEmpty()
+                        select new POCO.VehicleModel()
+                        {
+                            Id = model.Id,
+                            Name = model.Name,
+                            MakeId = model.MakeId,
+                            MakeName = makeProp.Name == null ? "Undefinded" : makeProp.Name,
+                            Year = model.Year,
+                            CreatedAt = model.CreatedAt,
+                            UpdatedAt = model.UpdatedAt
+                        };
+            return await Task.Run(() => query.OrderBy(i => i.Name).Where(i => i.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync());
         }
+
 
         public async Task<List<POCO.VehicleModel>> GetModels()
         {
-
-            var queryRes = await _vehiclesDbContext.VehiclesModel.GroupJoin(
-                _vehiclesDbContext.VehiclesMake,
-                model => model.MakeId,
-                make => make.Id,
-                (model, make) => new { Make = make, Model = model })
-                .SelectMany(x => x.Make.DefaultIfEmpty(),
-                (x, y) => new { Key = y.Name,  Value = x.Model }).Take(10).ToListAsync();
-
-            var keyPairRes = queryRes.Select(m => new KeyValuePair<string, VehicleModelEntity>(m.Key, m.Value));
-            return _mapper.Map<List<POCO.VehicleModel>>(keyPairRes);
+            var query = from model in _vehiclesDbContext.VehiclesModel
+                        join make in _vehiclesDbContext.VehiclesMake on model.MakeId equals make.Id into mo
+                        from makeProp in mo.DefaultIfEmpty()
+                        select new POCO.VehicleModel()
+                        {
+                            Id = model.Id,
+                            Name = model.Name,
+                            MakeId = model.MakeId,
+                            MakeName = makeProp.Name == null ? "Undefinded" : makeProp.Name,
+                            Year = model.Year,
+                            CreatedAt = model.CreatedAt,
+                            UpdatedAt = model.UpdatedAt
+                        };
+            return await Task.Run(() => query.OrderBy(i => i.Name).Take(10).ToListAsync());
         }
-
 
         public async Task<int> GetModelCount(string searchValue = "")
         {
@@ -200,6 +223,7 @@ namespace MonoTask.Core.Services.Services
             var destination = mapper.Map<TSource1, TDestination>(source1);
             return mapper.Map(source2, destination);
         }
+
 
         public static TDestination Map<TSource, TDestination>(
             this IMapper mapper, TSource source)

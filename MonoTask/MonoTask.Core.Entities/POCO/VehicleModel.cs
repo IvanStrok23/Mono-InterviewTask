@@ -14,5 +14,28 @@ namespace MonoTask.Core.Entities
         public DateTime CreatedAt { get; set; } 
         public DateTime UpdatedAt { get; set; } //TOCHECK: Do we need this in viewmodel ?
 
+        //public List<SortByType> SortableBy()
+        //{
+        //    return new List<SortByType>() { SortByType.Name, SortByType.MakeName, SortByType.Year };
+        //}
+
+
+        //public string GetSortProp(SortByType sortBy)
+        //{
+        //    switch (sortBy)
+        //    {
+        //        case SortByType.Name:
+        //            return this.Name;
+        //        case SortByType.MakeName:
+        //            return this.MakeName;
+        //        default:
+        //            return this.Name;
+        //    }
+        //}
+
+        public void SetName(string name)
+        {
+            MakeName = name;
+        }
     }
 }
