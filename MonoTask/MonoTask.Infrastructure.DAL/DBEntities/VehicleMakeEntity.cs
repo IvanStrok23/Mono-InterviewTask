@@ -1,10 +1,12 @@
 ﻿using MonoTask.Infrastructure.DAL.Interfaces;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MonoTask.Infrastructure.DAL.Entities
 {
     public class VehicleMakeEntity : IEntity
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Country { get; set; }

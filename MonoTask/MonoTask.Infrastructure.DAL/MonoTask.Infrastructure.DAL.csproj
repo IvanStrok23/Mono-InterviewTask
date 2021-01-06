@@ -202,6 +202,14 @@
     <Compile Include="Migrations\202012301630261_Entity sufix.designer.cs">
       <DependentUpon>202012301630261_Entity sufix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202101051538279_EF navigations.cs" />
+    <Compile Include="Migrations\202101051538279_EF navigations.designer.cs">
+      <DependentUpon>202101051538279_EF navigations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202101051603059_Test nav.cs" />
+    <Compile Include="Migrations\202101051603059_Test nav.designer.cs">
+      <DependentUpon>202101051603059_Test nav.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -265,6 +273,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012301630261_Entity sufix.resx">
       <DependentUpon>202012301630261_Entity sufix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101051538279_EF navigations.resx">
+      <DependentUpon>202101051538279_EF navigations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202101051603059_Test nav.resx">
+      <DependentUpon>202101051603059_Test nav.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
