@@ -1,6 +1,7 @@
-﻿using MonoTask.Core.Services;
-using MonoTask.Core.Services.Interfaces;
+﻿using AutoMapper;
+using MonoTask.Common.Interfaces.ServiceInterfaces;
 using MonoTask.UI.Web.Helper;
+using MonoTask.UI.Web.Models;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -14,16 +15,21 @@ namespace MonoTask.UI.Web.Controllers
     {
         private readonly IVehicleModelService _vehicleModelService;
         private readonly IVehicleMakeService _vehicleMakeService;
-        public ModelAdministrationController(IVehicleModelService vehicleModelService, IVehicleMakeService vehicleMakeService)
+        private readonly IMapper _mapper;
+        public ModelAdministrationController(IVehicleModelService vehicleModelService, IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
             _vehicleModelService = vehicleModelService;
             _vehicleMakeService = vehicleMakeService;
+            _mapper = mapper;
+
         }
         public async Task<ActionResult> Index()
         {
             var items = await _vehicleModelService.GetModels();
             var count = await _vehicleModelService.GetModelCount();
-            ViewBag.Items = items;
+
+            List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
+            ViewBag.Items = viewItems;
             ViewBag.SortOrder = "asc";
             ViewBag.CurrentPage = 1;
             ViewBag.PageMax = count / 10 + (count % 10 == 0 ? 0 : 1);
@@ -35,7 +41,9 @@ namespace MonoTask.UI.Web.Controllers
         {          
             var items = await _vehicleModelService.GetModelsSortedByColumn(sortingData);
             var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
-            ViewBag.Items = items;
+
+            List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
+            ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");          
         }
@@ -45,7 +53,9 @@ namespace MonoTask.UI.Web.Controllers
             sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
             var items = await _vehicleModelService.GetModelsByPage(sortingData);
             var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
-            ViewBag.Items = items;
+
+            List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
+            ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");
         }
@@ -55,7 +65,8 @@ namespace MonoTask.UI.Web.Controllers
             sortingData.SearchValue = sortingData.SearchValue == null ? "" : sortingData.SearchValue;
             var items = await _vehicleModelService.GetModelsByName(sortingData);
             var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
-            ViewBag.Items = items;
+            List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
+            ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");
         }
@@ -68,9 +79,10 @@ namespace MonoTask.UI.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Insert(POCO.VehicleModel model)
+        public async Task<ActionResult> Insert(VehicleModelView model)
         {
-            int id = await _vehicleModelService.InsertModel(model);
+            POCO.VehicleModel pocoModel = _mapper.Map<POCO.VehicleModel>(model);
+            int id = await _vehicleModelService.InsertModel(pocoModel);
             if (id != 0)
             {
                 return getResult(HttpStatusCode.OK, "Insert success!");

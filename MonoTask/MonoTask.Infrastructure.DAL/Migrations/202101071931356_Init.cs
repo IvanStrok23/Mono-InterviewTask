@@ -8,7 +8,7 @@
         public override void Up()
         {
             CreateTable(
-                "dbo.VehicleMakes",
+                "dbo.VehicleMakeEntities",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -20,23 +20,28 @@
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.VehicleModels",
+                "dbo.VehicleModelEntities",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        MakeId = c.Int(nullable: false),
+                        Name = c.String(),
                         Year = c.Int(nullable: false),
                         CreatedAt = c.DateTime(nullable: false),
                         UpdatedAt = c.DateTime(nullable: false),
+                        VehiceMake_Id = c.Int(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.VehicleMakeEntities", t => t.VehiceMake_Id)
+                .Index(t => t.VehiceMake_Id);
             
         }
         
         public override void Down()
         {
-            DropTable("dbo.VehicleModels");
-            DropTable("dbo.VehicleMakes");
+            DropForeignKey("dbo.VehicleModelEntities", "VehiceMake_Id", "dbo.VehicleMakeEntities");
+            DropIndex("dbo.VehicleModelEntities", new[] { "VehiceMake_Id" });
+            DropTable("dbo.VehicleModelEntities");
+            DropTable("dbo.VehicleMakeEntities");
         }
     }
 }

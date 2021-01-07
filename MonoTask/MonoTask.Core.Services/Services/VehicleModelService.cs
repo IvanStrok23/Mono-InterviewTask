@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MonoTask.Core.Entities;
 using MonoTask.UI.Web.Helper;
-using MonoTask.Core.Services.Interfaces;
 using MonoTask.Infrastructure.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using POCO = MonoTask.Core.Entities;
-
+using MonoTask.Common.Interfaces.ServiceInterfaces;
 
 namespace MonoTask.Core.Services.Services
 {
@@ -30,6 +29,7 @@ namespace MonoTask.Core.Services.Services
                 return 0;
             }
             VehicleModelEntity mapped = _mapper.Map<VehicleModelEntity>(entity);
+            mapped.VehiceMake = _vehiclesDbContext.VehiclesMake.Where(i => i.Id == entity.MakeId).FirstOrDefault();
             mapped.CreatedAt = DateTime.UtcNow;
             mapped.UpdatedAt = DateTime.UtcNow;
             return await _vehiclesDbContext.Insert(mapped);
@@ -62,7 +62,7 @@ namespace MonoTask.Core.Services.Services
             Include(m => m.VehiceMake);
             sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
             searchByName(ref query, filterData.SearchValue);
-            return _mapper.Map<List<POCO.VehicleModel>>(query.Skip((filterData.Page - 1) * 10).Take(10).ToListAsync());
+            return _mapper.Map<List<POCO.VehicleModel>>(await query.Skip((filterData.Page - 1) * 10).Take(10).ToListAsync());
 
         }
 

@@ -7,13 +7,13 @@ namespace MonoTask.Infrastructure.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class Testnav : IMigrationMetadata
+    public sealed partial class Init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Testnav));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Init));
         
         string IMigrationMetadata.Id
         {
-            get { return "202101051603059_Test nav"; }
+            get { return "202101071931356_Init"; }
         }
         
         string IMigrationMetadata.Source

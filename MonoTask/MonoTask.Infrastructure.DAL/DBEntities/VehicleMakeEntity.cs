@@ -1,5 +1,6 @@
 ﻿using MonoTask.Infrastructure.DAL.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MonoTask.Infrastructure.DAL.Entities
@@ -12,6 +13,7 @@ namespace MonoTask.Infrastructure.DAL.Entities
         public string Country { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public virtual ICollection<VehicleModelEntity> Models { get; set; }
 
         public int GetId()
         {

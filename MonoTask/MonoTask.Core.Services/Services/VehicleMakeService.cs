@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MonoTask.Core.Services.Interfaces;
+using MonoTask.Common.Interfaces.ServiceInterfaces;
 using MonoTask.Infrastructure.DAL.Entities;
 using MonoTask.UI.Web.Helper;
 using System;
@@ -106,9 +106,8 @@ namespace MonoTask.Core.Services.Services
 
         public async Task<bool> DeleteMake(int id)
         {
-            //TODO: Remove all Model objects that are maked from that maker if needed 
 
-            var m = await Task.Run(() => _vehiclesDbContext.VehiclesMake.FindAsync(id));
+            var m = await Task.Run(() => _vehiclesDbContext.VehiclesMake.Where(i => i.Id == id).Include(i => i.Models).FirstOrDefaultAsync());
             if (m == null)
             {
                 return false;

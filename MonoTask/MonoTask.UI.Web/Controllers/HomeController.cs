@@ -1,5 +1,4 @@
-﻿using MonoTask.Core.Services;
-using MonoTask.Core.Services.Interfaces;
+﻿using MonoTask.Common.Interfaces.ServiceInterfaces;
 using MonoTask.UI.Web.Helper;
 using System.Net;
 using System.Threading.Tasks;
@@ -34,7 +33,7 @@ namespace MonoTask.UI.Web.Controllers
                 int id = await _vehicleMakeService.InsertMake(makeItem);
                 foreach (var modelItem in testData.GetHardCodedModelsByMakeName(makeItem.Name,id))
                 {
-                    _vehicleModelService.InsertModel(modelItem);
+                   await _vehicleModelService.InsertModel(modelItem);
                 }
             }
             Response.StatusCode = (int)HttpStatusCode.OK;

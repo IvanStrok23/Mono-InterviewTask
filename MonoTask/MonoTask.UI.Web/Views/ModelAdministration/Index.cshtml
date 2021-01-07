@@ -153,12 +153,12 @@
             <tr>
                 <td>@item.Name</td>
                 <td>@item.Year</td>
-                <td>@(item.VehicleMake == null ? "" : item.VehicleMake.Name) </td>
+                <td>@item.MakeName</td>
                 <td>
                     <button type="button" id="btnDelete" class="btn btn-primary" onclick="DeleteCall(@item.Id)">
                         Delete
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="EditModel(@item.Id,'@item.Name',@item.Year,@(item.VehicleMake == null ? null : item.VehicleMake.Id))">
+                    <button type="button" class="btn btn-primary" onclick="EditModel(@item.Id,'@item.Name',@item.Year,@item.MakeId)">
                         Edit
                     </button>
                 </td>

@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoTask.Core.Services", "M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoTask.Core.Entities", "MonoTask.Core.Entities\MonoTask.Core.Entities.csproj", "{CA4EE84B-03D1-4B85-99B9-344F3C0949FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoTask.Common.Interfaces", "MonoTask.Common.Interfaces\MonoTask.Common.Interfaces.csproj", "{4AC7BB50-000E-4170-94CD-C796FBB00009}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CA4EE84B-03D1-4B85-99B9-344F3C0949FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA4EE84B-03D1-4B85-99B9-344F3C0949FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA4EE84B-03D1-4B85-99B9-344F3C0949FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AC7BB50-000E-4170-94CD-C796FBB00009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AC7BB50-000E-4170-94CD-C796FBB00009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AC7BB50-000E-4170-94CD-C796FBB00009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AC7BB50-000E-4170-94CD-C796FBB00009}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

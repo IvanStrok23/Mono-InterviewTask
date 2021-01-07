@@ -190,25 +190,9 @@
     <Compile Include="Interfaces\IVehiclesDbContext.cs" />
     <Compile Include="DBEntities\VehicleMakeEntity.cs" />
     <Compile Include="DBEntities\VehicleModelEntity.cs" />
-    <Compile Include="Migrations\202012231510461_Init.cs" />
-    <Compile Include="Migrations\202012231510461_Init.designer.cs">
-      <DependentUpon>202012231510461_Init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012272341106_ModeNameAdded.cs" />
-    <Compile Include="Migrations\202012272341106_ModeNameAdded.designer.cs">
-      <DependentUpon>202012272341106_ModeNameAdded.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202012301630261_Entity sufix.cs" />
-    <Compile Include="Migrations\202012301630261_Entity sufix.designer.cs">
-      <DependentUpon>202012301630261_Entity sufix.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101051538279_EF navigations.cs" />
-    <Compile Include="Migrations\202101051538279_EF navigations.designer.cs">
-      <DependentUpon>202101051538279_EF navigations.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202101051603059_Test nav.cs" />
-    <Compile Include="Migrations\202101051603059_Test nav.designer.cs">
-      <DependentUpon>202101051603059_Test nav.cs</DependentUpon>
+    <Compile Include="Migrations\202101071931356_Init.cs" />
+    <Compile Include="Migrations\202101071931356_Init.designer.cs">
+      <DependentUpon>202101071931356_Init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -265,23 +249,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202012231510461_Init.resx">
-      <DependentUpon>202012231510461_Init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012272341106_ModeNameAdded.resx">
-      <DependentUpon>202012272341106_ModeNameAdded.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202012301630261_Entity sufix.resx">
-      <DependentUpon>202012301630261_Entity sufix.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101051538279_EF navigations.resx">
-      <DependentUpon>202101051538279_EF navigations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202101051603059_Test nav.resx">
-      <DependentUpon>202101051603059_Test nav.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MonoTask.Core.Entities\MonoTask.Core.Entities.csproj">
       <Project>{ca4ee84b-03d1-4b85-99b9-344f3c0949ff}</Project>
       <Name>MonoTask.Core.Entities</Name>
@@ -289,6 +256,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AutoMapper\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202101071931356_Init.resx">
+      <DependentUpon>202101071931356_Init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

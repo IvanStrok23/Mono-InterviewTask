@@ -1,6 +1,9 @@
-﻿using MonoTask.Core.Services;
-using MonoTask.Core.Services.Interfaces;
+﻿using AutoMapper;
+using MonoTask.Common.Interfaces.ServiceInterfaces;
+using MonoTask.Core.Services;
 using MonoTask.UI.Web.Helper;
+using MonoTask.UI.Web.Models;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -11,9 +14,13 @@ namespace MonoTask.UI.Web.Controllers
     public class MakeAdministrationController : Controller
     {
         private readonly IVehicleMakeService _vehicleMakeService;
-        public MakeAdministrationController(IVehicleMakeService vehicleMakeService)
+        private readonly IMapper _mapper;
+
+        public MakeAdministrationController(IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
             _vehicleMakeService = vehicleMakeService;
+            _mapper = mapper;
+
         }
 
         public async Task<ActionResult> Index()
@@ -33,7 +40,9 @@ namespace MonoTask.UI.Web.Controllers
 
             var items = await _vehicleMakeService.GetMakesSortedByColumn(sortingData);
             var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
-            ViewBag.Items = items;
+
+            List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
+            ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");
         }
@@ -42,7 +51,9 @@ namespace MonoTask.UI.Web.Controllers
             sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
             var items = await _vehicleMakeService.GetMakesByPage(sortingData);
             var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
-            ViewBag.Items = items;
+            List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
+
+            ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");
         }
@@ -52,7 +63,9 @@ namespace MonoTask.UI.Web.Controllers
             sortingData.SearchValue = sortingData.SearchValue == null ? "" : sortingData.SearchValue;
             var items = await _vehicleMakeService.GetMakesByName(sortingData);
             var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
-            ViewBag.Items = items;
+            List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
+
+            ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");
         }

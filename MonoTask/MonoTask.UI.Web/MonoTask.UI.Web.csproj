@@ -180,6 +180,7 @@
     <Compile Include="Helper\AutoMapperProfile.cs" />
     <Compile Include="Helper\MappingExtensions.cs" />
     <Compile Include="Models\VehicleModelView.cs" />
+    <Compile Include="Models\VehicleMakeView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -237,18 +238,25 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MonoTask.Common.Interfaces\MonoTask.Common.Interfaces.csproj">
+      <Project>{4AC7BB50-000E-4170-94CD-C796FBB00009}</Project>
+      <Name>MonoTask.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonoTask.Core.Entities\MonoTask.Core.Entities.csproj">
       <Project>{ca4ee84b-03d1-4b85-99b9-344f3c0949ff}</Project>
       <Name>MonoTask.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonoTask.Core.Services\MonoTask.Core.Services.csproj">
-      <Project>{599F67F6-9B98-44BE-9BD5-B968FECCFEBB}</Project>
+      <Project>{599f67f6-9b98-44be-9bd5-b968feccfebb}</Project>
       <Name>MonoTask.Core.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonoTask.Infrastructure.DAL\MonoTask.Infrastructure.DAL.csproj">
       <Project>{5226D660-883B-4373-8B0D-7E692B4D594C}</Project>
       <Name>MonoTask.Infrastructure.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

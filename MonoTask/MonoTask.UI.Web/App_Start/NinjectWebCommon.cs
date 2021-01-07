@@ -9,8 +9,7 @@ namespace MonoTask.UI.Web.App_Start
     using global::Ninject;
     using global::Ninject.Web.Common;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-    using MonoTask.Core.Services;
-    using MonoTask.Core.Services.Interfaces;
+    using MonoTask.Common.Interfaces.ServiceInterfaces;
     using MonoTask.Core.Services.Services;
     using MonoTask.Infrastructure.DAL;
     using MonoTask.Infrastructure.DAL.AutoMapper;
