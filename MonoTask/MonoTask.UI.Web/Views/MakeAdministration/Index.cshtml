@@ -24,11 +24,8 @@
 
         function SearchByName() {
             window.location.href =
-                "@Url.Action("Index", "SearchByName")" +
-                "?page=" + 1 +
-                "&sortBy=" + "Name" +
-                "&sortOrder=" + "@ViewBag.SortOrder" +
-                "&searchValue=" + $("#searchValue").val();
+                "@Url.Action("SearchByName", "MakeAdministration")" +
+                "?searchValue=" + $("#searchValue").val();
         }
 
         function SoryByColumn(column) {
@@ -112,7 +109,7 @@
             <th>
                 @Html.ActionLink("Name", "SoryByColumn", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
-            <th>
+            <th style="width:300px">
                 @Html.ActionLink("Country", "SoryByColumn", new { page = 1, sortBy = "Country", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th style="width: 140px;">Actions</th>

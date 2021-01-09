@@ -14,6 +14,7 @@ namespace MonoTask.UI.Web.App_Start
     using MonoTask.Infrastructure.DAL;
     using MonoTask.Infrastructure.DAL.AutoMapper;
     using MonoTask.Infrastructure.DAL.Entities;
+    using MonoTask.Infrastructure.DAL.Interfaces;
     using Ninject;
 
     public static class NinjectWebCommon 

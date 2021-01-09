@@ -25,10 +25,7 @@
         function SearchByName() {
             window.location.href =
                 "@Url.Action("SearchByName", "ModelAdministration")" +
-                "?page=" + 1 +
-                "&sortBy=" + "Name" +
-                "&sortOrder=" + "@ViewBag.SortOrder" +
-                "&searchValue=" + $("#searchValue").val();
+                "?searchValue=" + $("#searchValue").val();
         }
 
         function SoryByColumn(column) {
@@ -140,10 +137,10 @@
             <th>
                 @Html.ActionLink("Name", "SoryByColumn", new { page = 1, sortBy = "Name", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
-            <th>
+            <th style="width:100px">
                 @Html.ActionLink("Year", "SoryByColumn", new { page = 1, sortBy = "Year", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
-            <th>
+            <th style="width:300px">
                 @Html.ActionLink("Make", "SoryByColumn", new { page = 1, sortBy = "Make", sortOrder = ViewBag.SortOrder == "asc" ? "desc" : "asc", searchValue = ViewBag.SearchValue }, new { @id = "SortLink" })
             </th>
             <th style="width: 140px;">Actions</th>

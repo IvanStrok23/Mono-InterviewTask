@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MonoTask.Common.Interfaces.ServiceInterfaces;
+using MonoTask.Core.Entities.Extensions;
+using MonoTask.Core.Entities.Helpers;
 using MonoTask.UI.Web.Helper;
 using MonoTask.UI.Web.Models;
 using System.Collections.Generic;
@@ -38,9 +40,11 @@ namespace MonoTask.UI.Web.Controllers
 
 
         public async Task<ActionResult> SoryByColumn(TableFilterData sortingData)
-        {          
-            var items = await _vehicleModelService.GetModelsSortedByColumn(sortingData);
-            var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
+        {
+            SortParams param = new SortParams(sortingData.SortBy.ToSortByEnum(), sortingData.SortOrder.ToSortOrderEnum(), sortingData.SearchValue);
+
+            var items = await _vehicleModelService.GetModelsSortedByColumn(param);
+            var count = await _vehicleModelService.GetModelCount(param.SearchValue);
 
             List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
             ViewBag.Items = viewItems;
@@ -50,9 +54,10 @@ namespace MonoTask.UI.Web.Controllers
 
         public async Task<ActionResult> GetByPage(TableFilterData sortingData)
         {
-            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
-            var items = await _vehicleModelService.GetModelsByPage(sortingData);
-            var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
+            PagingParams param = new PagingParams(sortingData.Page, sortingData.SortBy.ToSortByEnum(), sortingData.SortOrder.ToSortOrderEnum(), sortingData.SearchValue);
+
+            var items = await _vehicleModelService.GetModelsByPage(param);
+            var count = await _vehicleModelService.GetModelCount(param.SortParams.SearchValue);
 
             List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
             ViewBag.Items = viewItems;
@@ -60,14 +65,14 @@ namespace MonoTask.UI.Web.Controllers
             return View("Index");
         }
 
-        public async Task<ActionResult> SearchByName(TableFilterData sortingData)
+        public async Task<ActionResult> SearchByName(string searchValue)
         {
-            sortingData.SearchValue = sortingData.SearchValue == null ? "" : sortingData.SearchValue;
-            var items = await _vehicleModelService.GetModelsByName(sortingData);
-            var count = await _vehicleModelService.GetModelCount(sortingData.SearchValue);
+            searchValue = searchValue == null ? "" : searchValue;
+            var items = await _vehicleModelService.GetModelsByName(searchValue);
+            var count = await _vehicleModelService.GetModelCount(searchValue);
             List<VehicleModelView> viewItems = _mapper.Map<List<VehicleModelView>>(items);
             ViewBag.Items = viewItems;
-            setViewBagFilterData(sortingData, count);
+            setViewBagFilterData(new TableFilterData(searchValue), count);
             return View("Index");
         }
         private void setViewBagFilterData(TableFilterData sortingData, int setCount)

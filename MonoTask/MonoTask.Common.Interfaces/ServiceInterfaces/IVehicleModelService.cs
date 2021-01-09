@@ -1,4 +1,5 @@
 ﻿using MonoTask.Core.Entities;
+using MonoTask.Core.Entities.Helpers;
 using MonoTask.UI.Web.Helper;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace MonoTask.Common.Interfaces.ServiceInterfaces
         Task<VehicleModel> GetModelById(int id);
         Task<bool> EditModel(VehicleModel model);
         Task<List<VehicleModel>> GetModels();
-        Task<List<VehicleModel>> GetModelsSortedByColumn(TableFilterData filterData);
-        Task<List<VehicleModel>> GetModelsByPage(TableFilterData filterData);
-        Task<List<VehicleModel>> GetModelsByName(TableFilterData filterData);
+        Task<List<VehicleModel>> GetModelsSortedByColumn(SortParams sortParams);
+        Task<List<VehicleModel>> GetModelsByPage(PagingParams pagingParams);
+        Task<List<VehicleModel>> GetModelsByName(string searchValue);
         Task<int> GetModelCount(string searchValue = "");
         Task<bool> DeleteModel(int id);
 

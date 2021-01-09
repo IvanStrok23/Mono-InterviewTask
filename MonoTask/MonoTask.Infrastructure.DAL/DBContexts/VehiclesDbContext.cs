@@ -33,7 +33,7 @@ namespace MonoTask.Infrastructure.DAL
 
         public async Task<bool> Remove<T>(T entity) where T : class, IEntity
         {
-            base.Entry(entity).State = System.Data.Entity.EntityState.Deleted;
+            base.Entry(entity).State = EntityState.Deleted;
             await base.SaveChangesAsync();
             return true;
             

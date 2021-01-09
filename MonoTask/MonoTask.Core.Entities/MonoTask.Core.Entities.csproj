@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\EnumsHelper.cs" />
+    <Compile Include="Helpers\PagingParams.cs" />
+    <Compile Include="Helpers\SortParams.cs" />
     <Compile Include="Helpers\TableFilterData.cs" />
     <Compile Include="Helpers\TestData.cs" />
     <Compile Include="POCO\VehicleMake.cs" />

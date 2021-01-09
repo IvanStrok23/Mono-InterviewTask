@@ -19,5 +19,17 @@ namespace MonoTask.UI.Web.Helper
             SortOrder = "asc";
             SearchValue = "";         
         }
+
+        /// <summary>
+        /// Constructor to make new object with custom Search Value
+        /// </summary>
+        /// <param name="searchValue">Set search value.</param>
+        public TableFilterData(string searchValue)
+        {
+            Page = 1;
+            SortBy = "Name";
+            SortOrder = "asc";
+            SearchValue = searchValue;
+        }
     }
 }

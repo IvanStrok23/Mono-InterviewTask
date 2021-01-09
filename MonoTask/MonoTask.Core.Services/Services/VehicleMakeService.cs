@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MonoTask.Common.Interfaces.ServiceInterfaces;
+using MonoTask.Core.Entities.Helpers;
 using MonoTask.Infrastructure.DAL.Entities;
+using MonoTask.Infrastructure.DAL.Interfaces;
 using MonoTask.UI.Web.Helper;
 using System;
 using System.Collections.Generic;
@@ -40,29 +42,29 @@ namespace MonoTask.Core.Services.Services
             return _mapper.Map<POCO.VehicleMake>(result);
         }
 
-        public async Task<List<POCO.VehicleMake>> GetMakesSortedByColumn(TableFilterData filterData)
+        public async Task<List<POCO.VehicleMake>> GetMakesSortedByColumn(SortParams sortParams)
         {
 
             var query = from make in _vehiclesDbContext.VehiclesMake
                         select make;
-            sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
+            sortByColumn(ref query, sortParams.SortBy, sortParams.SortOrder);
 
-            var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync());
+            var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(sortParams.SearchValue)).Take(10).ToListAsync());
             return _mapper.Map<List<POCO.VehicleMake>>(result);
         }
 
-        public async Task<List<POCO.VehicleMake>> GetMakesByPage(TableFilterData filterData)
+        public async Task<List<POCO.VehicleMake>> GetMakesByPage(PagingParams pagingParams)
         {
             var query = from make in _vehiclesDbContext.VehiclesMake
                         select make;
-            sortByColumn(ref query, filterData.SortBy, filterData.SortOrder);
-            var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(filterData.SearchValue)).Skip((filterData.Page - 1) * 10).Take(10).ToListAsync());
+            sortByColumn(ref query, pagingParams.SortParams.SortBy, pagingParams.SortParams.SortOrder);
+            var result = await Task.Run(() => query.Where(i => i.Name.StartsWith(pagingParams.SortParams.SearchValue)).Skip((pagingParams.Page - 1) * 10).Take(10).ToListAsync());
             return _mapper.Map<List<POCO.VehicleMake>>(result);
         }
 
-        public async Task<List<POCO.VehicleMake>> GetMakesByName(TableFilterData filterData)
+        public async Task<List<POCO.VehicleMake>> GetMakesByName(string searchValue)
         {
-            var result = await Task.Run(() => _vehiclesDbContext.VehiclesMake.OrderBy(i => i.Name).Where(i => i.Name.StartsWith(filterData.SearchValue)).Take(10).ToListAsync());
+            var result = await Task.Run(() => _vehiclesDbContext.VehiclesMake.OrderBy(i => i.Name).Where(i => i.Name.StartsWith(searchValue)).Take(10).ToListAsync());
             return _mapper.Map<List<POCO.VehicleMake>>(result);
         }
 
@@ -115,19 +117,19 @@ namespace MonoTask.Core.Services.Services
             return await _vehiclesDbContext.Remove(m);
         }
 
-        private void sortByColumn(ref IQueryable<VehicleMakeEntity> query, string sortBy, string sortOrder)
+        private void sortByColumn(ref IQueryable<VehicleMakeEntity> query, SortbyEnum sortBy, SortOrderEnum sortOrder)
         {
 
             switch (sortBy)
             {
-                case "Name":
-                    query = sortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
+                case SortbyEnum.Name:
+                    query = sortOrder == SortOrderEnum.Desc ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
                     break;
-                case "Country":
-                    query = sortOrder == "desc" ? query.OrderByDescending(i => i.Country) : query.OrderBy(i => i.Country);
+                case SortbyEnum.Country:
+                    query = sortOrder == SortOrderEnum.Desc ? query.OrderByDescending(i => i.Country) : query.OrderBy(i => i.Country);
                     break;
                 default:
-                    query = sortOrder == "desc" ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
+                    query = sortOrder == SortOrderEnum.Desc ? query.OrderByDescending(i => i.Name) : query.OrderBy(i => i.Name);
                     break;
             }
         }

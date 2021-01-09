@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using MonoTask.Common.Interfaces.ServiceInterfaces;
+using MonoTask.Core.Entities.Extensions;
+using MonoTask.Core.Entities.Helpers;
 using MonoTask.Core.Services;
 using MonoTask.UI.Web.Helper;
 using MonoTask.UI.Web.Models;
@@ -37,10 +39,11 @@ namespace MonoTask.UI.Web.Controllers
 
         public async Task<ActionResult> SoryByColumn(TableFilterData sortingData)
         {
+            SortParams param = new SortParams(sortingData.SortBy.ToSortByEnum(), sortingData.SortOrder.ToSortOrderEnum(), sortingData.SearchValue);
 
-            var items = await _vehicleMakeService.GetMakesSortedByColumn(sortingData);
-            var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
 
+            var items = await _vehicleMakeService.GetMakesSortedByColumn(param);
+            var count = await _vehicleMakeService.GetMakeCount(param.SearchValue);
             List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
             ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
@@ -48,25 +51,25 @@ namespace MonoTask.UI.Web.Controllers
         }
         public async Task<ActionResult> GetByPage(TableFilterData sortingData)
         {
-            sortingData.Page = sortingData.Page <= 0 ? 1 : sortingData.Page;
-            var items = await _vehicleMakeService.GetMakesByPage(sortingData);
-            var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
-            List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
+            PagingParams param = new PagingParams(sortingData.Page, sortingData.SortBy.ToSortByEnum(), sortingData.SortOrder.ToSortOrderEnum(), sortingData.SearchValue);
 
+
+            var items = await _vehicleMakeService.GetMakesByPage(param);
+            var count = await _vehicleMakeService.GetMakeCount(param.SortParams.SearchValue);
+            List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
             ViewBag.Items = viewItems;
             setViewBagFilterData(sortingData, count);
             return View("Index");
         }
 
-        public async Task<ActionResult> SearchByName(TableFilterData sortingData)
+        public async Task<ActionResult> SearchByName(string searchValue)
         {
-            sortingData.SearchValue = sortingData.SearchValue == null ? "" : sortingData.SearchValue;
-            var items = await _vehicleMakeService.GetMakesByName(sortingData);
-            var count = await _vehicleMakeService.GetMakeCount(sortingData.SearchValue);
+            searchValue = searchValue == null ? "" : searchValue;
+            var items = await _vehicleMakeService.GetMakesByName(searchValue);
+            var count = await _vehicleMakeService.GetMakeCount(searchValue);
             List<VehicleMakeView> viewItems = _mapper.Map<List<VehicleMakeView>>(items);
-
             ViewBag.Items = viewItems;
-            setViewBagFilterData(sortingData, count);
+            setViewBagFilterData(new TableFilterData(searchValue), count);
             return View("Index");
         }
 
@@ -118,5 +121,7 @@ namespace MonoTask.UI.Web.Controllers
             Response.StatusCode = (int)code;
             return Json(new { success = false, message = text }, JsonRequestBehavior.AllowGet);
         }
+
+
     }
 }

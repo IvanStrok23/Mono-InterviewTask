@@ -186,10 +186,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IEntity.cs" />
-    <Compile Include="Interfaces\IVehiclesDbContext.cs" />
     <Compile Include="DBEntities\VehicleMakeEntity.cs" />
     <Compile Include="DBEntities\VehicleModelEntity.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IVehiclesDbContext.cs" />
     <Compile Include="Migrations\202101071931356_Init.cs" />
     <Compile Include="Migrations\202101071931356_Init.designer.cs">
       <DependentUpon>202101071931356_Init.cs</DependentUpon>
@@ -254,9 +254,7 @@
       <Name>MonoTask.Core.Entities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AutoMapper\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202101071931356_Init.resx">
       <DependentUpon>202101071931356_Init.cs</DependentUpon>
