@@ -64,7 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DALInterfaces\IEntity.cs" />
     <Compile Include="DALInterfaces\IVehiclesDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceInterfaces\IVehicleMakeService.cs" />
@@ -74,10 +73,6 @@
     <ProjectReference Include="..\MonoTask.Core.Entities\MonoTask.Core.Entities.csproj">
       <Project>{CA4EE84B-03D1-4B85-99B9-344F3C0949FF}</Project>
       <Name>MonoTask.Core.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoTask.Infrastructure.DAL\MonoTask.Infrastructure.DAL.csproj">
-      <Project>{5226D660-883B-4373-8B0D-7E692B4D594C}</Project>
-      <Name>MonoTask.Infrastructure.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

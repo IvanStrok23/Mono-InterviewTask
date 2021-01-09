@@ -186,10 +186,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBEntities\VehicleMakeEntity.cs" />
-    <Compile Include="DBEntities\VehicleModelEntity.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
-    <Compile Include="Interfaces\IVehiclesDbContext.cs" />
     <Compile Include="Migrations\202101071931356_Init.cs" />
     <Compile Include="Migrations\202101071931356_Init.designer.cs">
       <DependentUpon>202101071931356_Init.cs</DependentUpon>
@@ -249,12 +245,15 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MonoTask.Common.Interfaces\MonoTask.Common.Interfaces.csproj">
+      <Project>{4AC7BB50-000E-4170-94CD-C796FBB00009}</Project>
+      <Name>MonoTask.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MonoTask.Core.Entities\MonoTask.Core.Entities.csproj">
-      <Project>{ca4ee84b-03d1-4b85-99b9-344f3c0949ff}</Project>
+      <Project>{CA4EE84B-03D1-4B85-99B9-344F3C0949FF}</Project>
       <Name>MonoTask.Core.Entities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202101071931356_Init.resx">
       <DependentUpon>202101071931356_Init.cs</DependentUpon>

@@ -212,10 +212,6 @@
       <Project>{ca4ee84b-03d1-4b85-99b9-344f3c0949ff}</Project>
       <Name>MonoTask.Core.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MonoTask.Infrastructure.DAL\MonoTask.Infrastructure.DAL.csproj">
-      <Project>{5226D660-883B-4373-8B0D-7E692B4D594C}</Project>
-      <Name>MonoTask.Infrastructure.DAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

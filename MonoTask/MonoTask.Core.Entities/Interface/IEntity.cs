@@ -1,6 +1,6 @@
 ﻿
 
-namespace MonoTask.Common.Interfaces.DALInterfaces
+namespace MonoTask.Core.Entities.Interface
 {
     public interface IEntity
     {

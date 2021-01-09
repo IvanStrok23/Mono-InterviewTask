@@ -1,10 +1,10 @@
-﻿using MonoTask.Infrastructure.DAL.Entities;
-using MonoTask.Infrastructure.DAL.Interfaces;
+﻿using MonoTask.Core.Entities.Interface;
+using MonoTask.Infrastructure.DAL.Entities;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
-namespace MonoTask.Common.Interfaces.DALInterfaces
+namespace MonoTask.Infrastructure.DAL.Interfaces
 {
     public interface IVehiclesDbContext
     {

@@ -1,10 +1,6 @@
 ﻿using MonoTask.Core.Entities;
 using MonoTask.Core.Entities.Helpers;
-using MonoTask.UI.Web.Helper;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MonoTask.Common.Interfaces.ServiceInterfaces

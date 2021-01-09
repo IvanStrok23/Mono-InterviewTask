@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using MonoTask.Core.Entities;
-using MonoTask.UI.Web.Helper;
 using MonoTask.Infrastructure.DAL.Entities;
 using System;
 using System.Collections.Generic;

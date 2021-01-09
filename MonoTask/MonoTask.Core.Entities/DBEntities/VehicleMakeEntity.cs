@@ -1,4 +1,4 @@
-﻿using MonoTask.Infrastructure.DAL.Interfaces;
+﻿using MonoTask.Core.Entities.Interface;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -1,4 +1,4 @@
-﻿using MonoTask.Infrastructure.DAL.Interfaces;
+﻿using MonoTask.Core.Entities.Interface;
 using System;
 
 namespace MonoTask.Infrastructure.DAL.Entities

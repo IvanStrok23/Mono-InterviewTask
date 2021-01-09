@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonoTask.Core.Entities
 {
-   public class VehicleMake
+    public class VehicleMake
     {
         public int Id { get; set; }
         public string Name { get; set; }

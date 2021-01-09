@@ -247,7 +247,7 @@
       <Name>MonoTask.Core.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonoTask.Core.Services\MonoTask.Core.Services.csproj">
-      <Project>{599f67f6-9b98-44be-9bd5-b968feccfebb}</Project>
+      <Project>{599F67F6-9B98-44BE-9BD5-B968FECCFEBB}</Project>
       <Name>MonoTask.Core.Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\MonoTask.Infrastructure.DAL\MonoTask.Infrastructure.DAL.csproj">

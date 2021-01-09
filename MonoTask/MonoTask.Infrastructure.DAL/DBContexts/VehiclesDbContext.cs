@@ -1,4 +1,5 @@
-﻿using MonoTask.Infrastructure.DAL.Entities;
+﻿using MonoTask.Core.Entities.Interface;
+using MonoTask.Infrastructure.DAL.Entities;
 using MonoTask.Infrastructure.DAL.Interfaces;
 using System.Collections.Generic;
 using System.Data.Entity;

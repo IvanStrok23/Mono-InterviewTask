@@ -3,12 +3,10 @@ using MonoTask.Common.Interfaces.ServiceInterfaces;
 using MonoTask.Core.Entities.Helpers;
 using MonoTask.Infrastructure.DAL.Entities;
 using MonoTask.Infrastructure.DAL.Interfaces;
-using MonoTask.UI.Web.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using POCO = MonoTask.Core.Entities;
 
