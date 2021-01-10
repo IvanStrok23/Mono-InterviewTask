@@ -178,7 +178,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\AutoMapperProfile.cs" />
-    <Compile Include="Helper\MappingExtensions.cs" />
     <Compile Include="Models\VehicleModelView.cs" />
     <Compile Include="Models\VehicleMakeView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

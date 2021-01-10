@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MonoTask.UI.Web.Helper
+﻿namespace MonoTask.UI.Web.Helper
 {
     public class TableFilterData
     {
